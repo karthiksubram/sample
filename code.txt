@@ -1,0 +1,44 @@
+# Function to read a text file
+def encrypt(text, shift):
+    encrypted_text = ""
+    for char in text:
+        if char.isalpha():  # Check if the character is a letter
+            shift_amount = shift % 26  # There are 26 letters in the alphabet
+            ascii_offset = ord('a') if char.islower() else ord('A')
+            encrypted_char = chr((ord(char) - ascii_offset + shift_amount) % 26 + ascii_offset)
+            encrypted_text += encrypted_char
+        else:
+            encrypted_text += char  # Non-alphabetical characters are not changed
+    return encrypted_text
+
+def decrypt(text, shift):
+    return encrypt(text, -shift)
+
+def read_file(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            contents = file.read()
+            return contents
+    except FileNotFoundError:
+        return "The file was not found."
+    except IOError:
+        return "An error occurred while reading the file."
+
+
+# Example usage
+#print ('Hello')
+file_path = 'C:\\Users\\karthik\\Downloads\\content.txt'
+file_contents = read_file(file_path)
+#print(file_contents)
+
+text = "Hello, World!"
+shift = 3
+
+encrypted_text = encrypt(file_contents, shift)
+
+print(encrypted_text)
+
+print('-------------------*****-----------------------------------------------------------------')
+
+encrypted_text = decrypt(encrypted_text, shift)
+#print(encrypted_text)
