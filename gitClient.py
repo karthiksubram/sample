@@ -48,3 +48,36 @@ else:
     print(f"Error: {response.status_code}")
     print(response.json())
 
+
+import requests
+
+# Define variables
+owner = 'repository-owner'
+repo = 'repository-name'
+access_token = 'your_personal_access_token'  # optional if accessing private repos or to increase rate limits
+
+# Construct the initial URL for the GitHub API
+url = f'https://api.github.com/repos/{owner}/{repo}/branches'
+headers = {
+    'Authorization': f'token {access_token}'
+} if access_token else {}
+
+branches = []
+
+while url:
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        branches.extend(response.json())
+        # Check for pagination
+        if 'next' in response.links:
+            url = response.links['next']['url']
+        else:
+            url = None
+    else:
+        print(f"Error: {response.status_code}")
+        print(response.json())
+        break
+
+# Print all branches
+for branch in branches:
+    print(branch['name'])
