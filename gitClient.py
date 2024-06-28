@@ -10,6 +10,21 @@ branch = 'main'  # or any specific branch you want to target
 # Construct the URL for the GitHub API
 url = f'https://api.github.com/repos/{owner}/{repo}/contents/{file_path}?ref={branch}'
 
+# Construct the URL for the GitHub API
+url = f'https://api.github.com/repos/{owner}/{repo}/branches'
+
+# Make the API request with authentication
+response = requests.get(url, headers=headers)
+
+# Check if the request was successful
+if response.status_code == 200:
+    branches = response.json()
+    for branch in branches:
+        print(branch['name'])
+else:
+    print(f"Error: {response.status_code}")
+    print(response.json())
+
 # Make the API request
 # response = requests.get(url)
 # Define your personal access token
