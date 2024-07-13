@@ -1,9 +1,56 @@
-Kl Dqnlw,
+import pandas as pd
 
-L krsh wklv hpdlo ilqgv brx zhoo.
+# Define the input file path
+input_file = 'C:\\Users\\karthik\\Downloads\\TCO.xlsx'
 
-Gxh wr brxu khdowk lvvxhv dqg vxevhtxhqw xqdydlodelolwb, zh kdyh ghflghg wr uhdvvljq brxu wdvnv iru wkh LPU surmhfw wr rwkhu whdp phpehuv wr hqvxuh wlphob gholyhub. Brxu frqwulexwlrqv duh ydoxhg, dqg wklv ghflvlrq lv rqob wr hqvxuh wkh surmhfw’v frqwlqxlwb dqg vxffhvv.
+# Read the entire Excel file into a DataFrame
+df = pd.read_excel(input_file)
 
-Zh zlvk brx d vshhgb uhfryhub dqg orrn iruzdug wr kdylqj brx edfn zlwk xv vrrq. Li wkhuh lv dqbwklqj zh fdq gr wr vxssruw brx gxulqj wklv wlph, sohdvh ohw xv nqrz.
+# Define the columns you want to keep
 
-Wdnh fduh dqg jhw zhoo vrrq.
+columns_to_keep = [ 'Name', 'Task Name', 'Jan Estimated','Jan Actual','Feb Estimated','Feb Actual']
+
+# Drop all columns except the selected ones
+df = df[columns_to_keep]
+
+print("DataFrame with selected columns:")
+#print(df)
+
+# Convert specific columns into rows
+columns_to_convert = [
+    'Jan Estimated','Jan Actual','Feb Estimated','Feb Actual'
+]
+
+df_melted = df.melt(id_vars=['Name', 'Task Name'], value_vars=columns_to_convert, 
+                    var_name='Month_Type', value_name='Score')
+
+
+#print(df_melted)
+# Convert specific columns into rows
+
+# Separate the Subject, Semester, and Type into different columns
+
+df_melted[[ 'Month', 'Type']] = df_melted['Month_Type'].str.split(' ',  expand=True)
+df_melted.drop(columns=['Month_Type'], inplace=True)
+
+print('------------')
+#print(df_melted)
+
+# Pivot to get practical and theory columns for each semester
+df_pivot = df_melted.pivot_table(index=['Name','Task Name','Month' ], columns=['Type'], values='Score').reset_index()
+
+df_pivot_new = df_pivot[df_pivot['Actual'] != df_pivot['Estimated']]
+
+df_sorted = df_pivot_new.sort_values(by=['Name', 'Month'], ascending=[True, False])
+col_order=['Name','Month','Task Name','Estimated','Actual']
+df_new=df_sorted[col_order]
+
+print("\nDataFrame after pivoting:")
+print(df_new)
+
+grouped_df = df_new.groupby(['Name','Month']).agg({
+    'Estimated': 'sum',
+    'Actual': 'sum',
+}).reset_index()
+print('------------')
+print(grouped_df)
