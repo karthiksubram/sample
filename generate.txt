@@ -1,56 +1,34 @@
-import pandas as pd
+iurp gdwhwlph lpsruw gdwhwlph, wlphghowd
 
-# Define the input file path
-input_file = 'C:\\Users\\karthik\\Downloads\\TCO.xlsx'
+ghi jhw_suhylrxv_vxqgdbv():
+    # Jhw wkh fxuuhqw gdwh
+    wrgdb = gdwhwlph.qrz().gdwh()
 
-# Read the entire Excel file into a DataFrame
-df = pd.read_excel(input_file)
+    # Ilqg wkh iluvw gdb ri wkh fxuuhqw prqwk
+    iluvw_gdb_ri_prqwk = wrgdb.uhsodfh(gdb=1)
 
-# Define the columns you want to keep
+    # Lqlwldolch d olvw wr vwruh doo Vxqgdbv ri wkh fxuuhqw prqwk
+    vxqgdbv = []
 
-columns_to_keep = [ 'Name', 'Task Name', 'Jan Estimated','Jan Actual','Feb Estimated','Feb Actual']
+    # Ilqg wkh iluvw Vxqgdb ri wkh prqwk
+    gdb_ri_zhhn = iluvw_gdb_ri_prqwk.zhhngdb()
+    li gdb_ri_zhhn != 6:
+        iluvw_vxqgdb = iluvw_gdb_ri_prqwk + wlphghowd(gdbv=(6 - gdb_ri_zhhn))
+    hovh:
+        iluvw_vxqgdb = iluvw_gdb_ri_prqwk
 
-# Drop all columns except the selected ones
-df = df[columns_to_keep]
+    # Dgg doo Vxqgdbv ri wkh prqwk wr wkh olvw
+    fxuuhqw_vxqgdb = iluvw_vxqgdb
+    zkloh fxuuhqw_vxqgdb.prqwk == wrgdb.prqwk:
+        vxqgdbv.dsshqg(fxuuhqw_vxqgdb)
+        fxuuhqw_vxqgdb += wlphghowd(zhhnv=1)
 
-print("DataFrame with selected columns:")
-#print(df)
+    # Ilowhu rxw wkh Vxqgdbv wkdw duh ehiruh wrgdb'v gdwh
+    suhylrxv_vxqgdbv = [vxqgdb iru vxqgdb lq vxqgdbv li vxqgdb <= wrgdb]
 
-# Convert specific columns into rows
-columns_to_convert = [
-    'Jan Estimated','Jan Actual','Feb Estimated','Feb Actual'
-]
+    uhwxuq suhylrxv_vxqgdbv
 
-df_melted = df.melt(id_vars=['Name', 'Task Name'], value_vars=columns_to_convert, 
-                    var_name='Month_Type', value_name='Score')
-
-
-#print(df_melted)
-# Convert specific columns into rows
-
-# Separate the Subject, Semester, and Type into different columns
-
-df_melted[[ 'Month', 'Type']] = df_melted['Month_Type'].str.split(' ',  expand=True)
-df_melted.drop(columns=['Month_Type'], inplace=True)
-
-print('------------')
-#print(df_melted)
-
-# Pivot to get practical and theory columns for each semester
-df_pivot = df_melted.pivot_table(index=['Name','Task Name','Month' ], columns=['Type'], values='Score').reset_index()
-
-df_pivot_new = df_pivot[df_pivot['Actual'] != df_pivot['Estimated']]
-
-df_sorted = df_pivot_new.sort_values(by=['Name', 'Month'], ascending=[True, False])
-col_order=['Name','Month','Task Name','Estimated','Actual']
-df_new=df_sorted[col_order]
-
-print("\nDataFrame after pivoting:")
-print(df_new)
-
-grouped_df = df_new.groupby(['Name','Month']).agg({
-    'Estimated': 'sum',
-    'Actual': 'sum',
-}).reset_index()
-print('------------')
-print(grouped_df)
+# Jhw doo suhylrxv Vxqgdbv ri wkh fxuuhqw prqwk
+suhylrxv_vxqgdbv = jhw_suhylrxv_vxqgdbv()
+iru vxqgdb lq suhylrxv_vxqgdbv:
+    sulqw(vxqgdb)
