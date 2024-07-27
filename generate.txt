@@ -1,34 +1,21 @@
-iurp gdwhwlph lpsruw gdwhwlph, wlphghowd
+@hfkr rii
+UHP Vhwwlqj hqylurqphqw yduldeohv
+vhw PB_HQY_YDU1=ydoxh1
+vhw PB_HQY_YDU2=ydoxh2
 
-ghi jhw_suhylrxv_vxqgdbv():
-    # Jhw wkh fxuuhqw gdwh
-    wrgdb = gdwhwlph.qrz().gdwh()
+UHP Vhwwlqj MYP dujxphqwv
+vhw MYP_DUJV=-Apv512p -Apa1024p
 
-    # Ilqg wkh iluvw gdb ri wkh fxuuhqw prqwk
-    iluvw_gdb_ri_prqwk = wrgdb.uhsodfh(gdb=1)
+UHP Odxqfklqj wkh Vsulqj Errw dssolfdwlrq
+mdyd %MYP_DUJV% -mdu pbdss.mdu
 
-    # Lqlwldolch d olvw wr vwruh doo Vxqgdbv ri wkh fxuuhqw prqwk
-    vxqgdbv = []
 
-    # Ilqg wkh iluvw Vxqgdb ri wkh prqwk
-    gdb_ri_zhhn = iluvw_gdb_ri_prqwk.zhhngdb()
-    li gdb_ri_zhhn != 6:
-        iluvw_vxqgdb = iluvw_gdb_ri_prqwk + wlphghowd(gdbv=(6 - gdb_ri_zhhn))
-    hovh:
-        iluvw_vxqgdb = iluvw_gdb_ri_prqwk
+@hfkr rii
+UHP Dfwlydwlqj wkh Frqgd hqylurqphqw
+fdoo frqgd dfwlydwh pbhqy
 
-    # Dgg doo Vxqgdbv ri wkh prqwk wr wkh olvw
-    fxuuhqw_vxqgdb = iluvw_vxqgdb
-    zkloh fxuuhqw_vxqgdb.prqwk == wrgdb.prqwk:
-        vxqgdbv.dsshqg(fxuuhqw_vxqgdb)
-        fxuuhqw_vxqgdb += wlphghowd(zhhnv=1)
+UHP Odxqfklqj Mxsbwhu Ode
+mxsbwhu ode
 
-    # Ilowhu rxw wkh Vxqgdbv wkdw duh ehiruh wrgdb'v gdwh
-    suhylrxv_vxqgdbv = [vxqgdb iru vxqgdb lq vxqgdbv li vxqgdb <= wrgdb]
-
-    uhwxuq suhylrxv_vxqgdbv
-
-# Jhw doo suhylrxv Vxqgdbv ri wkh fxuuhqw prqwk
-suhylrxv_vxqgdbv = jhw_suhylrxv_vxqgdbv()
-iru vxqgdb lq suhylrxv_vxqgdbv:
-    sulqw(vxqgdb)
+UHP Rswlrqdo: Ghdfwlydwh wkh Frqgd hqylurqphqw diwhu forvlqj Mxsbwhu Ode
+UHP fdoo frqgd ghdfwlydwh
