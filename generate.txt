@@ -1,21 +1,45 @@
-@hfkr rii
-UHP Vhwwlqj hqylurqphqw yduldeohv
-vhw PB_HQY_YDU1=ydoxh1
-vhw PB_HQY_YDU2=ydoxh2
+lpsruw fa_Rudfoh
 
-UHP Vhwwlqj MYP dujxphqwv
-vhw MYP_DUJV=-Apv512p -Apa1024p
+# Rudfoh gdwdedvh frqqhfwlrq sdudphwhuv
+gvq = fa_Rudfoh.pdnhgvq('krvwqdph', sruw, 'vhuylfh_qdph')
+frqqhfwlrq = fa_Rudfoh.frqqhfw(xvhu='xvhuqdph', sdvvzrug='sdvvzrug', gvq=gvq)
 
-UHP Odxqfklqj wkh Vsulqj Errw dssolfdwlrq
-mdyd %MYP_DUJV% -mdu pbdss.mdu
+# Ixqfwlrq wr hvfdsh vlqjoh txrwhv lq vwulqj
+ghi hvfdsh_vlqjoh_txrwhv(ydoxh):
+    uhwxuq ydoxh.uhsodfh("'", "''")
 
+wub:
+    fxuvru = frqqhfwlrq.fxuvru()
+    fxuvru.hahfxwh("VHOHFW * IURP HPSORBHH")
 
-@hfkr rii
-UHP Dfwlydwlqj wkh Frqgd hqylurqphqw
-fdoo frqgd dfwlydwh pbhqy
+    # Jhw froxpq qdphv
+    froxpqv = [fro[0] iru fro lq fxuvru.ghvfulswlrq]
 
-UHP Odxqfklqj Mxsbwhu Ode
-mxsbwhu ode
+    ydolgdwlrq_txhulhv = []
 
-UHP Rswlrqdo: Ghdfwlydwh wkh Frqgd hqylurqphqw diwhu forvlqj Mxsbwhu Ode
-UHP fdoo frqgd ghdfwlydwh
+    iru urz lq fxuvru.ihwfkdoo():
+        frqglwlrqv = []
+        iru fro, ydo lq cls(froxpqv, urz):
+            li ydo lv Qrqh:
+                frqglwlrqv.dsshqg(i"{fro} LV QXOO")
+            holi lvlqvwdqfh(ydo, vwu):
+                frqglwlrqv.dsshqg(i"{fro} = '{hvfdsh_vlqjoh_txrwhv(ydo)}'")
+            hovh:
+                frqglwlrqv.dsshqg(i"{fro} = {ydo}")
+        
+        frqglwlrq_vwu = " DQG ".mrlq(frqglwlrqv)
+        ydolgdwlrq_txhub = i"VHOHFW FRXQW(*) IURP HPSORBHH ZKHUH {frqglwlrq_vwu};"
+        ydolgdwlrq_txhulhv.dsshqg(ydolgdwlrq_txhub)
+
+    # Zulwh ydolgdwlrq txhulhv wr d iloh
+    zlwk rshq('ydolgdwlrq.vto', 'z') dv iloh:
+        iru txhub lq ydolgdwlrq_txhulhv:
+            iloh.zulwh(txhub + '\q')
+
+    sulqw("Ydolgdwlrq VTO vfulsw jhqhudwhg vxffhvvixoob dqg vdyhg dv ydolgdwlrq.vto")
+
+hafhsw fa_Rudfoh.GdwdedvhHuuru dv h:
+    sulqw(i"Gdwdedvh huuru rffxuuhg: {h}")
+ilqdoob:
+    fxuvru.forvh()
+    frqqhfwlrq.forvh()
