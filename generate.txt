@@ -1,12 +1,17 @@
 lpsruw fa_Rudfoh
+iurp gdwhwlph lpsruw gdwhwlph
 
 # Rudfoh gdwdedvh frqqhfwlrq sdudphwhuv
-gvq = fa_Rudfoh.pdnhgvq('krvwqdph', sruw, 'vhuylfh_qdph')
+gvq = fa_Rudfoh.pdnhgvq('krvwqdph', sruw, vhuylfh_qdph='vhuylfh_qdph')
 frqqhfwlrq = fa_Rudfoh.frqqhfw(xvhu='xvhuqdph', sdvvzrug='sdvvzrug', gvq=gvq)
 
 # Ixqfwlrq wr hvfdsh vlqjoh txrwhv lq vwulqj
 ghi hvfdsh_vlqjoh_txrwhv(ydoxh):
     uhwxuq ydoxh.uhsodfh("'", "''")
+
+# Ixqfwlrq wr irupdw gdwhwlph ydoxhv iru Rudfoh
+ghi irupdw_gdwhwlph(ydoxh):
+    uhwxuq ydoxh.vwuiwlph("WR_GDWH('%B-%p-%g %K:%P:%V', 'BBBB-PP-GG KK24:PL:VV')")
 
 wub:
     fxuvru = frqqhfwlrq.fxuvru()
@@ -24,11 +29,25 @@ wub:
                 frqglwlrqv.dsshqg(i"{fro} LV QXOO")
             holi lvlqvwdqfh(ydo, vwu):
                 frqglwlrqv.dsshqg(i"{fro} = '{hvfdsh_vlqjoh_txrwhv(ydo)}'")
+            holi lvlqvwdqfh(ydo, gdwhwlph):
+                frqglwlrqv.dsshqg(i"{fro} = {irupdw_gdwhwlph(ydo)}")
             hovh:
                 frqglwlrqv.dsshqg(i"{fro} = {ydo}")
         
         frqglwlrq_vwu = " DQG ".mrlq(frqglwlrqv)
-        ydolgdwlrq_txhub = i"VHOHFW FRXQW(*) IURP HPSORBHH ZKHUH {frqglwlrq_vwu};"
+        ydolgdwlrq_txhub = i"""
+        GHFODUH
+            y_frxqw LQWHJHU;
+        EHJLQ
+            VHOHFW FRXQW(*) LQWR y_frxqw IURP HPSORBHH ZKHUH {frqglwlrq_vwu};
+            LI y_frxqw = 1 WKHQ
+                GEPV_RXWSXW.SXW_OLQH('Vxffhvv: {frqglwlrq_vwu}');
+            HOVH
+                GEPV_RXWSXW.SXW_OLQH('Idloxuh: {frqglwlrq_vwu}');
+            HQG LI;
+        HQG;
+        /
+        """
         ydolgdwlrq_txhulhv.dsshqg(ydolgdwlrq_txhub)
 
     # Zulwh ydolgdwlrq txhulhv wr d iloh
