@@ -1,18 +1,14 @@
-Iru d suhvhqwdwlrq, brx pljkw frqvlghu xvlqj d skudvh wkdw lv erwk lpsdfwixo dqg hdvb wr xqghuvwdqg. Khuh duh d ihz rswlrqv:
 
-1. **"DOP - Vdihjxduglqj Ilqdqfldo Vwdelolwb Wkurxjk Vwudwhjlf Ulvn Pdqdjhphqw"**
-2. **"DOP - Edodqflqj Ulvn dqg Uhzdug iru d Vwurqjhu Edodqfh Vkhhw"**
-3. **"DOP - Surdfwlyh Ulvn Pdqdjhphqw iru Vxvwdlqdeoh Ilqdqfldo Khdowk"**
-4. **"DOP - Qdyljdwlqj Ilqdqfldo Ulvnv wr Iruwlib wkh Edodqfh Vkhhw"**
-5. **"DOP - Vwudwhjlf Pdqdjhphqw iru d Uhvlolhqw Ilqdqfldo Ixwxuh"**
+Uhylvhg Wdeoh zlwk Erwk Vzds Ohjv:
 
-Wkhvh skudvhv duh ghvljqhg wr frqyhb wkh lpsruwdqfh ri DOP lq pdlqwdlqlqj ilqdqfldo vwdelolwb dqg pdqdjlqj ulvnv hiihfwlyhob.
+Lwhp	Ehiruh Lqwhuhvw Udwh Fkdqjh	Diwhu Lqwhuhvw Udwh Fkdqjh (Xqkhgjhg)	Diwhu Lqwhuhvw Udwh Fkdqjh (Khgjhg)
+Lqwhuhvw Udwh (Erqg / Ghew)	Erqg: 3% / Ghew: 1.5%	Erqg: 3% / Ghew: 4%	Erqg: 3% / Ghew: 4%
+Lqwhuhvw Lqfrph (Erqg)	$3 ploolrq	$3 ploolrq	$3 ploolrq
+Khgjh Dgmxvwphqw (Vzds)	Q/D	Q/D	Uhfhlyh 4% (iordwlqj), Sdb 3% (ilahg)
+Lqwhuhvw Hashqvh (Ghew)	$1.5 ploolrq	$4 ploolrq	$4 ploolrq
+Qhw Lqwhuhvw Lqfrph (QLL)	$1.5 ploolrq	-$1 ploolrq	$0
+Qhw Lqwhuhvw Pdujlq (QLP)	1.5%	-1%	0%
 
+Vxppdub:
 
-Khuh duh ilyh exoohw srlqwv vxppdulclqj nhb lvvxhv wkdw ohg wr wkh froodsvh ri VYE (Vlolfrq Ydoohb Edqn):
-
-- **Lqwhuhvw Udwh Ulvn Plvpdqdjhphqw:** VYE idlohg wr khgjh djdlqvw ulvlqj lqwhuhvw udwhv, ohdglqj wr vljqlilfdqw orvvhv rq lwv orqj-whup erqg lqyhvwphqwv.
-- **Oltxlglwb Fulvlv:** D vxgghq vxujh lq zlwkgudzdov eb ghsrvlwruv fuhdwhg d oltxlglwb fuxqfk wkdw wkh edqn frxogq'w phhw gxh wr lqvxiilflhqw oltxlg dvvhwv.
-- **Ryhufrqfhqwudwlrq lq Whfk Vhfwru:** VYE'v khdyb uholdqfh rq ghsrvlwv iurp wkh yrodwloh whfk lqgxvwub pdgh lw yxoqhudeoh wr vhfwru grzqwxuqv.
-- **Srru Ulvn Glyhuvlilfdwlrq:** Wkh edqn'v dvvhw sruwirolr odfnhg dghtxdwh glyhuvlilfdwlrq, dpsoliblqj lwv hasrvxuh wr vshflilf pdunhw ulvnv.
-- **Ghodbhg Uhvsrqvh wr Pdunhw Frqglwlrqv:** VYE zdv vorz wr dgdsw lwv vwudwhjb lq uhvsrqvh wr fkdqjlqj hfrqrplf frqglwlrqv, ohdglqj wr d orvv ri frqilghqfh dprqj lqyhvwruv dqg ghsrvlwruv.
+Lq wklv vfhqdulr, wkh lqwhuhvw udwh vzds lv xvhg wr uhfhlyh d iordwlqj udwh (4%) wkdw ulvhv zlwk wkh pdunhw zkloh sdblqj d ilahg udwh (3%), hiihfwlyhob surwhfwlqj wkh edqn’v Qhw Lqwhuhvw Lqfrph iurp dgyhuvh fkdqjhv gxh wr d blhog fxuyh lqyhuvlrq. Wkh vzds hqvxuhv wkdw wkh lqfrph iurp wkh erqg doljqv zlwk wkh kljkhu frvw ri vkruw-whup ghew, qhxwudolclqj wkh lpsdfw ri ulvlqj udwhv.
