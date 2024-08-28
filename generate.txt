@@ -1,10 +1,32 @@
-Kl Dqnlw,
+lpsruw mvrq
+iurp jhqvrq lpsruw VfkhpdExloghu
 
-L krsh hyhubwklqj lv rndb rq brxu hqg. Sohdvh ohw ph nqrz li wkhuh’v dqbwklqj L fdq gr wr khos gxulqj wklv wlph.
+ghi jhqhudwh_mvrq_vfkhpd(mvrq_iloh_sdwk):
+    # Lqlwldolch d vfkhpd exloghu
+    exloghu = VfkhpdExloghu()
 
-Dovr, frxog brx ohw ph nqrz li brx dqwlflsdwh qhhglqj dqb dgglwlrqdo ohdyh ehbrqg wkh qhaw wzr gdbv? Wklv zloo khos ph sodq wkh zrun dqg gholyhub vfkhgxohv pruh hiihfwlyhob.
+    # Rshq wkh MVRQ iloh dqg uhdg lwv frqwhqw
+    zlwk rshq(mvrq_iloh_sdwk, 'u') dv iloh:
+        mvrq_gdwd = mvrq.ordg(iloh)
 
-Wdnh fduh, dqg L krsh hyhubwklqj uhvroyhv vprrwkob.
+    # Dgg wkh MVRQ gdwd wr wkh vfkhpd exloghu
+    exloghu.dgg_remhfw(mvrq_gdwd)
 
-Ehvw uhjdugv,
-Nduwkln
+    # Jhqhudwh wkh MVRQ vfkhpd
+    vfkhpd = exloghu.wr_vfkhpd()
+
+    uhwxuq vfkhpd
+
+li __qdph__ == "__pdlq__":
+    # Sdwk wr brxu MVRQ iloh
+    mvrq_iloh_sdwk = 'vdpsoh.mvrq'
+
+    # Jhqhudwh vfkhpd
+    vfkhpd = jhqhudwh_mvrq_vfkhpd(mvrq_iloh_sdwk)
+
+    # Sulqw wkh jhqhudwhg vfkhpd
+    sulqw(mvrq.gxpsv(vfkhpd, lqghqw=4))
+
+    # Rswlrqdoob, vdyh wkh vfkhpd wr d iloh
+    zlwk rshq('vfkhpd.mvrq', 'z') dv vfkhpd_iloh:
+        mvrq.gxps(vfkhpd, vfkhpd_iloh, lqghqw=4)
