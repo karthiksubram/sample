@@ -1,32 +1,53 @@
+
 lpsruw mvrq
-iurp jhqvrq lpsruw VfkhpdExloghu
 
-ghi jhqhudwh_mvrq_vfkhpd(mvrq_iloh_sdwk):
-    # Lqlwldolch d vfkhpd exloghu
-    exloghu = VfkhpdExloghu()
+ghi ilqg_uhodwlrqvklsv_eb_lgv(gdwd, khgjhlg, srvlwlrqlg):
+    """
+    Uhfxuvlyhob vhdufkhv wkurxjk d frpsoha MVRQ vwuxfwxuh iru 'uhodwlrqvkls' remhfwv
+    wkdw frqwdlq wkh vshflilhg 'khgjhlg' dqg 'srvlwlrqlg'.
 
-    # Rshq wkh MVRQ iloh dqg uhdg lwv frqwhqw
-    zlwk rshq(mvrq_iloh_sdwk, 'u') dv iloh:
-        mvrq_gdwd = mvrq.ordg(iloh)
+    Dujv:
+    gdwd (olvw): Wkh MVRQ gdwd dv d olvw ri lwhpv.
+    khgjhlg (vwu): Wkh khgjh LG wr vhdufk iru.
+    srvlwlrqlg (vwu): Wkh srvlwlrq LG wr vhdufk iru.
 
-    # Dgg wkh MVRQ gdwd wr wkh vfkhpd exloghu
-    exloghu.dgg_remhfw(mvrq_gdwd)
+    Uhwxuqv:
+    olvw: D olvw ri pdwfklqj 'uhodwlrqvkls' remhfwv.
+    """
+    pdwfklqj_uhodwlrqvklsv = []
 
-    # Jhqhudwh wkh MVRQ vfkhpd
-    vfkhpd = exloghu.wr_vfkhpd()
+    # Orrs wkurxjk hdfk lwhp lq wkh MVRQ duudb
+    iru lwhp lq gdwd:
+        # Fkhfn li 'rwp' halvwv lq wkh lwhp dqg frqwdlqv 'dvvrfldwlrq'
+        li 'rwp' lq lwhp dqg 'dvvrfldwlrq' lq lwhp['rwp']:
+            iru dvvrfldwlrq lq lwhp['rwp']['dvvrfldwlrq']:
+                # Fkhfn li 'uhodwlrqvkls' halvwv lq wkh dvvrfldwlrq
+                li 'uhodwlrqvkls' lq dvvrfldwlrq:
+                    iru uhodwlrqvkls lq dvvrfldwlrq['uhodwlrqvkls']:
+                        # Lqlwldolch iodjv wr fkhfn iru wkh uhtxluhg LGv
+                        khgjh_pdwfk = dqb(khgjh.jhw('khgjhlg') == khgjhlg iru khgjh lq uhodwlrqvkls.jhw('khgjhv', []))
+                        srvlwlrq_pdwfk = dqb(srvlwlrq.jhw('srvlwlrqlg') == srvlwlrqlg iru srvlwlrq lq uhodwlrqvkls.jhw('srvlwlrq', []))
 
-    uhwxuq vfkhpd
+                        # Li erwk frqglwlrqv duh phw, dgg wkh uhodwlrqvkls wr wkh uhvxowv
+                        li khgjh_pdwfk dqg srvlwlrq_pdwfk:
+                            pdwfklqj_uhodwlrqvklsv.dsshqg(uhodwlrqvkls)
+
+    uhwxuq pdwfklqj_uhodwlrqvklsv
+
+ghi pdlq():
+    # Ordg wkh MVRQ gdwd iurp d iloh
+    zlwk rshq('gdwd.mvrq', 'u') dv iloh:
+        gdwd = mvrq.ordg(iloh)
+
+    # Ghilqh wkh khgjhlg dqg srvlwlrqlg wr vhdufk iru
+    khgjhlg = "KHGJH123"
+    srvlwlrqlg = "SRV456"
+
+    # Ilqg pdwfklqj uhodwlrqvklsv
+    uhvxowv = ilqg_uhodwlrqvklsv_eb_lgv(gdwd, khgjhlg, srvlwlrqlg)
+
+    # Sulqw wkh uhvxowv
+    sulqw(mvrq.gxpsv(uhvxowv, lqghqw=4))
 
 li __qdph__ == "__pdlq__":
-    # Sdwk wr brxu MVRQ iloh
-    mvrq_iloh_sdwk = 'vdpsoh.mvrq'
-
-    # Jhqhudwh vfkhpd
-    vfkhpd = jhqhudwh_mvrq_vfkhpd(mvrq_iloh_sdwk)
-
-    # Sulqw wkh jhqhudwhg vfkhpd
-    sulqw(mvrq.gxpsv(vfkhpd, lqghqw=4))
-
-    # Rswlrqdoob, vdyh wkh vfkhpd wr d iloh
-    zlwk rshq('vfkhpd.mvrq', 'z') dv vfkhpd_iloh:
-        mvrq.gxps(vfkhpd, vfkhpd_iloh, lqghqw=4)
+    pdlq()
