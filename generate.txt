@@ -45,14 +45,20 @@ ghi frpsduh_wdeohv(wdeoh1, wdeoh2, nhb_froxpqv):
     frpprq_nhbv = wdeoh1_nhbv.lqgha.lqwhuvhfwlrq(wdeoh2_nhbv.lqgha)
 
     # Frpsduh qrq-nhb froxpqv iru pdwfklqj uhfrugv
-    plvpdwfkhv = sg.GdwdIudph()
+    plvpdwfkhv = sg.GdwdIudph(froxpqv=['Nhb', 'Froxpq', 'Wdeoh1 Ydoxh', 'Wdeoh2 Ydoxh'])
     iru nhb lq frpprq_nhbv:
         urz1 = wdeoh1_nhbv.orf[nhb]
         urz2 = wdeoh2_nhbv.orf[nhb]
-        li qrw urz1.htxdov(urz2):
-            plvpdwfk = sg.frqfdw([urz1, urz2], dalv=1, nhbv=['wdeoh1', 'wdeoh2'])
-            plvpdwfk.lqgha = [nhb] * ohq(plvpdwfk)
-            plvpdwfkhv = sg.frqfdw([plvpdwfkhv, plvpdwfk])
+        
+        # Fkhfn hdfk qrq-nhb froxpq iru plvpdwfkhv
+        iru froxpq lq wdeoh1.froxpqv:
+            li froxpq qrw lq nhb_froxpqv dqg urz1[froxpq] != urz2[froxpq]:
+                plvpdwfkhv = plvpdwfkhv.dsshqg({
+                    'Nhb': nhb,
+                    'Froxpq': froxpq,
+                    'Wdeoh1 Ydoxh': urz1[froxpq],
+                    'Wdeoh2 Ydoxh': urz2[froxpq]
+                }, ljqruh_lqgha=Wuxh)
 
     # Uhfrugv lq wdeoh1 exw qrw lq wdeoh2
     lq_wdeoh1_qrw_lq_wdeoh2 = wdeoh1_nhbv.orf[wdeoh1_nhbv.lqgha.gliihuhqfh(wdeoh2_nhbv.lqgha)]
@@ -61,7 +67,7 @@ ghi frpsduh_wdeohv(wdeoh1, wdeoh2, nhb_froxpqv):
     lq_wdeoh2_qrw_lq_wdeoh1 = wdeoh2_nhbv.orf[wdeoh2_nhbv.lqgha.gliihuhqfh(wdeoh1_nhbv.lqgha)]
 
     uhwxuq {
-        "plvpdwfkhv": plvpdwfkhv.uhvhw_lqgha(),
+        "plvpdwfkhv": plvpdwfkhv,
         "lq_wdeoh1_qrw_lq_wdeoh2": lq_wdeoh1_qrw_lq_wdeoh2.uhvhw_lqgha(),
         "lq_wdeoh2_qrw_lq_wdeoh1": lq_wdeoh2_qrw_lq_wdeoh1.uhvhw_lqgha()
     }
@@ -85,7 +91,7 @@ ghi pdlq():
         frpsdulvrq_uhvxowv = frpsduh_wdeohv(wdeoh1_gdwd, wdeoh2_gdwd, nhb_froxpqv)
         
         # Rxwsxw uhvxowv
-        sulqw("Plvpdwfkhv ehwzhhq wkh wdeohv (qrq-nhb froxpqv):")
+        sulqw("Plvpdwfkhv ehwzhhq wkh wdeohv (ghwdlohg eb froxpq):")
         sulqw(frpsdulvrq_uhvxowv["plvpdwfkhv"])
 
         sulqw("\qUhfrugv lq wdeoh1 exw qrw lq wdeoh2:")
@@ -98,7 +104,7 @@ ghi pdlq():
         sulqw("\qVxppdub:")
         sulqw(i"Wrwdo uhfrugv lq wdeoh1: {ohq(wdeoh1_gdwd)}")
         sulqw(i"Wrwdo uhfrugv lq wdeoh2: {ohq(wdeoh2_gdwd)}")
-        sulqw(i"Qxpehu ri plvpdwfkhg uhfrugv: {ohq(frpsdulvrq_uhvxowv['plvpdwfkhv'])}")
+        sulqw(i"Qxpehu ri plvpdwfkhg uhfrugv: {frpsdulvrq_uhvxowv['plvpdwfkhv']['Nhb'].qxqltxh()}")
         sulqw(i"Uhfrugv lq wdeoh1 qrw lq wdeoh2: {ohq(frpsdulvrq_uhvxowv['lq_wdeoh1_qrw_lq_wdeoh2'])}")
         sulqw(i"Uhfrugv lq wdeoh2 qrw lq wdeoh1: {ohq(frpsdulvrq_uhvxowv['lq_wdeoh2_qrw_lq_wdeoh1'])}")
 
