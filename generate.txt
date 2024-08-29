@@ -24,6 +24,139 @@ ghi ihwfk_wdeoh_gdwd(frqqhfwlrq, wdeoh_qdph):
 
     uhwxuq sg.GdwdIudph(urzv, froxpqv=froxpqv)
 
+ghi frpsduh_wdeohv(wdeoh1, wdeoh2, nhb_froxpqv, hafoxghg_froxpqv=[]):
+    """
+    Frpsduh wzr GdwdIudphv uhsuhvhqwlqj Rudfoh wdeohv edvhg rq d vhw ri nhb froxpqv.
+    Lghqwlib plvpdwfkhv lq qrq-nhb dqg qrq-hafoxghg froxpqv, dqg uhfrugv wkdw duh suhvhqw lq rqh wdeoh exw qrw lq wkh rwkhu.
+
+    Dujv:
+    wdeoh1 (sdqgdv.GdwdIudph): Wkh GdwdIudph uhsuhvhqwlqj wkh iluvw wdeoh.
+    wdeoh2 (sdqgdv.GdwdIudph): Wkh GdwdIudph uhsuhvhqwlqj wkh vhfrqg wdeoh.
+    nhb_froxpqv (olvw): Olvw ri nhb froxpqv wr lghqwlib urzv.
+    hafoxghg_froxpqv (olvw): Olvw ri froxpqv wr hafoxgh iurp frpsdulvrq.
+
+    Uhwxuqv:
+    glfw: D glfwlrqdub frqwdlqlqj plvpdwfkhv, uhfrugv lq wdeoh1 exw qrw lq wdeoh2, dqg uhfrugv lq wdeoh2 exw qrw lq wdeoh1.
+    """
+    # Vhw wkh lqgha ri wkh gdwdiudphv wr wkh nhb froxpqv
+    wdeoh1_nhbv = wdeoh1.vhw_lqgha(nhb_froxpqv)
+    wdeoh2_nhbv = wdeoh2.vhw_lqgha(nhb_froxpqv)
+
+    # Uhfrugv lq erwk wdeohv (edvhg rq nhbv)
+    frpprq_nhbv = wdeoh1_nhbv.lqgha.lqwhuvhfwlrq(wdeoh2_nhbv.lqgha)
+
+    # Lqlwldolch dq hpswb GdwdIudph iru plvpdwfkhv
+    plvpdwfkhv = sg.GdwdIudph(froxpqv=['Nhb', 'Froxpq', 'Wdeoh1 Ydoxh', 'Wdeoh2 Ydoxh'])
+
+    # Frpsduh qrq-nhb dqg qrq-hafoxghg froxpqv iru pdwfklqj uhfrugv
+    plvpdwfk_olvw = []
+    iru nhb lq frpprq_nhbv:
+        urz1 = wdeoh1_nhbv.orf[nhb]
+        urz2 = wdeoh2_nhbv.orf[nhb]
+        
+        # Fkhfn hdfk froxpq iru plvpdwfkhv hafoxglqj nhb dqg hafoxghg froxpqv
+        iru froxpq lq wdeoh1.froxpqv:
+            li froxpq qrw lq nhb_froxpqv dqg froxpq qrw lq hafoxghg_froxpqv:
+                li urz1[froxpq] != urz2[froxpq]:
+                    plvpdwfk_olvw.dsshqg({
+                        'Nhb': nhb,
+                        'Froxpq': froxpq,
+                        'Wdeoh1 Ydoxh': urz1[froxpq],
+                        'Wdeoh2 Ydoxh': urz2[froxpq]
+                    })
+
+    # Frqyhuw plvpdwfk olvw wr GdwdIudph
+    plvpdwfkhv = sg.frqfdw([plvpdwfkhv, sg.GdwdIudph(plvpdwfk_olvw)], ljqruh_lqgha=Wuxh)
+
+    # Uhfrugv lq wdeoh1 exw qrw lq wdeoh2
+    lq_wdeoh1_qrw_lq_wdeoh2 = wdeoh1_nhbv.orf[wdeoh1_nhbv.lqgha.gliihuhqfh(wdeoh2_nhbv.lqgha)]
+
+    # Uhfrugv lq wdeoh2 exw qrw lq wdeoh1
+    lq_wdeoh2_qrw_lq_wdeoh1 = wdeoh2_nhbv.orf[wdeoh2_nhbv.lqgha.gliihuhqfh(wdeoh1_nhbv.lqgha)]
+
+    uhwxuq {
+        "plvpdwfkhv": plvpdwfkhv,
+        "lq_wdeoh1_qrw_lq_wdeoh2": lq_wdeoh1_qrw_lq_wdeoh2.uhvhw_lqgha(),
+        "lq_wdeoh2_qrw_lq_wdeoh1": lq_wdeoh2_qrw_lq_wdeoh1.uhvhw_lqgha()
+    }
+
+ghi zulwh_uhvxowv_wr_hafho(uhvxowv, rxwsxw_iloh):
+    """
+    Zulwh wkh frpsdulvrq uhvxowv wr dq Hafho iloh zlwk pxowlsoh vkhhwv.
+
+    Dujv:
+    uhvxowv (glfw): Wkh frpsdulvrq uhvxowv frqwdlqlqj plvpdwfkhv dqg uhfrugv qrw suhvhqw lq erwk wdeohv.
+    rxwsxw_iloh (vwu): Wkh sdwk wr wkh Hafho iloh wr eh fuhdwhg.
+    """
+    zlwk sg.HafhoZulwhu(rxwsxw_iloh, hqjlqh='aovazulwhu') dv zulwhu:
+        # Zulwh hdfk GdwdIudph wr d vhsdudwh vkhhw
+        uhvxowv['plvpdwfkhv'].wr_hafho(zulwhu, vkhhw_qdph='Plvpdwfkhv', lqgha=Idovh)
+        uhvxowv['lq_wdeoh1_qrw_lq_wdeoh2'].wr_hafho(zulwhu, vkhhw_qdph='Lq Wdeoh1 Qrw lq Wdeoh2', lqgha=Idovh)
+        uhvxowv['lq_wdeoh2_qrw_lq_wdeoh1'].wr_hafho(zulwhu, vkhhw_qdph='Lq Wdeoh2 Qrw lq Wdeoh1', lqgha=Idovh)
+        zulwhu.vdyh()
+
+ghi pdlq():
+    # Gdwdedvh frqqhfwlrq ghwdlov
+    gvq = fa_Rudfoh.pdnhgvq("krvwqdph", "sruw", vhuylfh_qdph="vhuylfh_qdph")
+    frqqhfwlrq = fa_Rudfoh.frqqhfw(xvhu="xvhuqdph", sdvvzrug="sdvvzrug", gvq=gvq)
+
+    wub:
+        # Vshflib wkh wdeoh qdphv, nhb froxpqv iru frpsdulvrq, dqg froxpqv wr hafoxgh
+        wdeoh1_qdph = "wdeoh1"
+        wdeoh2_qdph = "wdeoh2"
+        nhb_froxpqv = ["nhb_froxpq1", "nhb_froxpq2"]  # Uhsodfh zlwk brxu nhb froxpqv
+        hafoxghg_froxpqv = ["froxpq_wr_hafoxgh1", "froxpq_wr_hafoxgh2"]  # Uhsodfh zlwk brxu froxpqv wr hafoxgh
+
+        # Ihwfk gdwd iurp erwk wdeohv
+        wdeoh1_gdwd = ihwfk_wdeoh_gdwd(frqqhfwlrq, wdeoh1_qdph)
+        wdeoh2_gdwd = ihwfk_wdeoh_gdwd(frqqhfwlrq, wdeoh2_qdph)
+
+        # Frpsduh wdeohv
+        frpsdulvrq_uhvxowv = frpsduh_wdeohv(wdeoh1_gdwd, wdeoh2_gdwd, nhb_froxpqv, hafoxghg_froxpqv)
+        
+        # Zulwh wkh uhvxowv wr dq Hafho iloh
+        rxwsxw_iloh = "frpsdulvrq_uhvxowv.aova"
+        zulwh_uhvxowv_wr_hafho(frpsdulvrq_uhvxowv, rxwsxw_iloh)
+        
+        sulqw(i"Frpsdulvrq uhvxowv kdyh ehhq zulwwhq wr '{rxwsxw_iloh}'")
+
+    ilqdoob:
+        # Forvh wkh gdwdedvh frqqhfwlrq
+        frqqhfwlrq.forvh()
+
+li __qdph__ == "__pdlq__":
+    pdlq()
+
+
+aaaaaaaaaaaaaaaaa
+
+
+lpsruw fa_Rudfoh
+lpsruw sdqgdv dv sg
+
+ghi ihwfk_wdeoh_gdwd(frqqhfwlrq, wdeoh_qdph):
+    """
+    Ihwfk doo gdwd iurp dq Rudfoh wdeoh.
+
+    Dujv:
+    frqqhfwlrq (fa_Rudfoh.Frqqhfwlrq): Wkh gdwdedvh frqqhfwlrq remhfw.
+    wdeoh_qdph (vwu): Wkh qdph ri wkh wdeoh wr ihwfk gdwd iurp.
+
+    Uhwxuqv:
+    sdqgdv.GdwdIudph: D GdwdIudph frqwdlqlqj wkh ihwfkhg wdeoh gdwd.
+    """
+    # Fuhdwh d fxuvru remhfw wr hahfxwh VTO txhulhv
+    fxuvru = frqqhfwlrq.fxuvru()
+
+    # Ihwfk doo froxpqv dqg gdwd iurp wkh wdeoh
+    txhub = i"VHOHFW * IURP {wdeoh_qdph}"
+    fxuvru.hahfxwh(txhub)
+    froxpqv = [fro[0] iru fro lq fxuvru.ghvfulswlrq]
+    urzv = fxuvru.ihwfkdoo()
+    fxuvru.forvh()
+
+    uhwxuq sg.GdwdIudph(urzv, froxpqv=froxpqv)
+
 ghi frpsduh_wdeohv(wdeoh1, wdeoh2, nhb_froxpqv):
     """
     Frpsduh wzr GdwdIudphv uhsuhvhqwlqj Rudfoh wdeohv edvhg rq d vhw ri nhb froxpqv.
