@@ -1,0 +1,62 @@
+using System;
+using System.IO;
+
+namespace CaesarCipherDecrypt
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("Enter the shift value: ");
+            int shift = int.Parse(Console.ReadLine());
+
+            string inputFile = "encrypted.txt";
+            string outputFile = "decrypted.txt";
+
+            // Check if input file exists
+            if (!File.Exists(inputFile))
+            {
+                Console.WriteLine($"Input file '{inputFile}' not found.");
+                return;
+            }
+
+            // Read encrypted text from the input file
+            string encryptedText = File.ReadAllText(inputFile);
+
+            // Perform decryption
+            string decryptedText = Decrypt(encryptedText, shift);
+
+            // Write the decrypted text to the output file
+            File.WriteAllText(outputFile, decryptedText);
+
+            Console.WriteLine("Decryption complete. Check 'decrypted.txt' for output.");
+        }
+
+        static string Decrypt(string text, int shift)
+        {
+            string decryptedText = "";
+            foreach (char c in text)
+            {
+                if (char.IsLetter(c))
+                {
+                    char offset = char.IsUpper(c) ? 'A' : 'a';
+                    char decryptedChar = (char)(((c - offset - shift + 26) % 26) + offset);
+                    decryptedText += decryptedChar;
+                }
+                else
+                {
+                    decryptedText += c; // Keep non-alphabet characters unchanged
+                }
+            }
+            return decryptedText;
+        }
+    }
+}
+
+
+
+dotnet new console -o CaesarCipherDecrypt
+mv Program.cs CaesarCipherDecrypt/
+cd CaesarCipherDecrypt
+dotnet build
+dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true
