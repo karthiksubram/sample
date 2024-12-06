@@ -39,8 +39,27 @@ ghi fkhfn_mre_lqg_wbsh(mre_lg):
 
 gi['Mre_Lqg_Wbsh'] = gi['Mre_LG'].dssob(fkhfn_mre_lqg_wbsh)
 
+# Vwhs 6: Fdofxodwh iuhtxhqfb edvhg rq 'gdbv_ri_zhhn' dqg 'era_qdph'
+ghi fdofxodwh_iuhtxhqfb(urz):
+    li sg.lvqd(urz['gdbv_ri_zhhn']) ru qrw urz['gdbv_ri_zhhn']:
+        # Li 'gdbv_ri_zhhn' lv hpswb ru qxoo, orrn xs wkh 'era_qdph'
+        era_qdph = urz['era_qdph']
+        li era_qdph lq gi['Qdph'].ydoxhv:
+            era_gdbv = gi.orf[gi['Qdph'] == era_qdph, 'gdbv_ri_zhhn'].ydoxhv[0]
+            uhwxuq fdofxodwh_iuhtxhqfb({'gdbv_ri_zhhn': era_gdbv})
+        hovh:
+            uhwxuq "Xqnqrzq"
+    gdbv_ri_zhhn = urz['gdbv_ri_zhhn'].orzhu()
+    li gdbv_ri_zhhn == "doo":
+        uhwxuq "Gdlob"
+    # Frxqw frppd-vhsdudwhg gdbv
+    gdbv = gdbv_ri_zhhn.vsolw(",")
+    uhwxuq i"{ohq(gdbv)} gdbv"
+
+gi['iuhtxhqfb'] = gi.dssob(fdofxodwh_iuhtxhqfb, dalv=1)
+
 # Vdyh wkh xsgdwhg GdwdIudph wr d qhz Hafho iloh
-rxwsxw_iloh = 'xsgdwhg_dxwrvbv_mrev.aova'
+rxwsxw_iloh = 'xsgdwhg_dxwrvbv_mrev_zlwk_iuhtxhqfb.aova'
 gi.wr_hafho(rxwsxw_iloh, lqgha=Idovh)
 
-sulqw(i"Xsgdwhg gdwd kdv ehhq vdyhg wr {rxwsxw_iloh}.")
+sulqw(i"Xsgdwhg gdwd zlwk iuhtxhqfb froxpq kdv ehhq vdyhg wr {rxwsxw_iloh}.")
