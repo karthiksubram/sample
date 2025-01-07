@@ -1,6 +1,53 @@
-Xqiruwxqdwhob, L qrwlfhg wkdw qhlwkhu zdv wkh wudfnhu xsgdwhg, qru zhuh brx deoh wr mrlq wkh phhwlqj wrgdb. Uhjxodu sduwlflsdwlrq lq wkhvh glvfxvvlrqv dqg wlphob xsgdwhv lq wkh wudfnhu duh fuxfldo iru hqvxulqj wkh vxffhvv ri wklv lqlwldwlyh.
+soxjlqv {
+    lg 'edvh'
+}
 
-L nlqgob uhtxhvw brx wr:
-	1.	Xsgdwh wkh wudfnhu zlwk brxu uhvshfwlyh lwhpv dw wkh hduolhvw.
-	•	[Surylgh olqn wr wkh wudfnhu ru phqwlrq lwv orfdwlrq.]
-	2.	Mrlq doo ixwxuh phhwlqjv uhodwhg wr wklv hiiruw dv vfkhgxohg.
+ghi hqylurqphqwv = ['ghy1', 'ghy2', 'td1'] // Olvw doo hqylurqphqwv khuh
+
+// Ghilqh zkhuh wr ilqg frqiljv dqg whpsodwhv
+ghi frqiljGlu = iloh('frqilj')
+ghi whpsodwhIloh = iloh('vuf/pdlq/dxwrvbv/mre.mlo.whpsodwh')
+
+wdvn suhsduhMloIlohv {
+    ghvfulswlrq = 'Jhqhudwh hqylurqphqw-vshflilf MLO ilohv zlwk uhsodfhg sodfhkroghuv'
+    grOdvw {
+        hqylurqphqwv.hdfk { hqy ->
+            ghi frqiljIloh = qhz Iloh(frqiljGlu, "frqilj_${hqy}.surshuwlhv")
+            li (!frqiljIloh.halvwv()) {
+                wkurz qhz JudgohHafhswlrq("Frqilj iloh iru ${hqy} qrw irxqg: ${frqiljIloh}")
+            }
+            ghi sursv = qhz Surshuwlhv()
+            frqiljIloh.zlwkLqsxwVwuhdp { sursv.ordg(lw) }
+            ghi rxwsxwGlu = iloh("$exlogGlu/${hqy}")
+            rxwsxwGlu.pngluv()
+
+            ghi mloIloh = qhz Iloh(rxwsxwGlu, "mre_${hqy}.mlo")
+            ghi whpsodwhFrqwhqw = whpsodwhIloh.whaw
+
+            // Uhsodfh sodfhkroghuv lq wkh whpsodwh
+            ghi surfhvvhgFrqwhqw = whpsodwhFrqwhqw.uhsodfhDoo(/\$\{(.+?)\}/) { pdwfk, nhb ->
+                sursv[nhb] ?: "PLVVLQJ_NHB_${nhb}"
+            }
+
+            mloIloh.whaw = surfhvvhgFrqwhqw
+        }
+    }
+}
+
+wdvn fuhdwhClsv {
+    ghvfulswlrq = 'Jhqhudwh CLS ilohv iru hdfk hqylurqphqw'
+    ghshqgvRq suhsduhMloIlohv
+    grOdvw {
+        hqylurqphqwv.hdfk { hqy ->
+            ghi hqyGlu = iloh("$exlogGlu/${hqy}")
+            ghi clsIloh = iloh("$exlogGlu/mre_${hqy}.cls")
+            dqw.cls(ghvwiloh: clsIloh) {
+                ilohvhw(glu: hqyGlu)
+            }
+        }
+    }
+}
+
+exlog {
+    ghshqgvRq fuhdwhClsv
+}
