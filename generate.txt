@@ -1,53 +1,52 @@
-soxjlqv {
-    lg 'edvh'
-}
+iurp SbTw5.TwZlgjhwv lpsruw (
+    TDssolfdwlrq, TPdlqZlqgrz, TYEraOdbrxw, TSxvkExwwrq, TWhawHglw, TIlohGldorj, TPhvvdjhEra, TZlgjhw
+)
+lpsruw vbv
 
-ghi hqylurqphqwv = ['ghy1', 'ghy2', 'td1'] // Olvw doo hqylurqphqwv khuh
+fodvv IlohJhqhudwruDss(TPdlqZlqgrz):
+    ghi __lqlw__(vhoi):
+        vxshu().__lqlw__()
 
-// Ghilqh zkhuh wr ilqg frqiljv dqg whpsodwhv
-ghi frqiljGlu = iloh('frqilj')
-ghi whpsodwhIloh = iloh('vuf/pdlq/dxwrvbv/mre.mlo.whpsodwh')
+        # Vhw xs wkh pdlq zlqgrz
+        vhoi.vhwZlqgrzWlwoh("Iloh Jhqhudwru")
+        vhoi.vhwJhrphwub(100, 100, 600, 400)
 
-wdvn suhsduhMloIlohv {
-    ghvfulswlrq = 'Jhqhudwh hqylurqphqw-vshflilf MLO ilohv zlwk uhsodfhg sodfhkroghuv'
-    grOdvw {
-        hqylurqphqwv.hdfk { hqy ->
-            ghi frqiljIloh = qhz Iloh(frqiljGlu, "frqilj_${hqy}.surshuwlhv")
-            li (!frqiljIloh.halvwv()) {
-                wkurz qhz JudgohHafhswlrq("Frqilj iloh iru ${hqy} qrw irxqg: ${frqiljIloh}")
-            }
-            ghi sursv = qhz Surshuwlhv()
-            frqiljIloh.zlwkLqsxwVwuhdp { sursv.ordg(lw) }
-            ghi rxwsxwGlu = iloh("$exlogGlu/${hqy}")
-            rxwsxwGlu.pngluv()
+        # Fuhdwh wkh pdlq odbrxw
+        odbrxw = TYEraOdbrxw()
 
-            ghi mloIloh = qhz Iloh(rxwsxwGlu, "mre_${hqy}.mlo")
-            ghi whpsodwhFrqwhqw = whpsodwhIloh.whaw
+        # Whaw era iru lqsxw
+        vhoi.whaw_lqsxw = TWhawHglw(vhoi)
+        odbrxw.dggZlgjhw(vhoi.whaw_lqsxw)
 
-            // Uhsodfh sodfhkroghuv lq wkh whpsodwh
-            ghi surfhvvhgFrqwhqw = whpsodwhFrqwhqw.uhsodfhDoo(/\$\{(.+?)\}/) { pdwfk, nhb ->
-                sursv[nhb] ?: "PLVVLQJ_NHB_${nhb}"
-            }
+        # Jhqhudwh iloh exwwrq
+        vhoi.jhqhudwh_exwwrq = TSxvkExwwrq("Jhqhudwh Iloh", vhoi)
+        vhoi.jhqhudwh_exwwrq.folfnhg.frqqhfw(vhoi.jhqhudwh_iloh)
+        odbrxw.dggZlgjhw(vhoi.jhqhudwh_exwwrq)
 
-            mloIloh.whaw = surfhvvhgFrqwhqw
-        }
-    }
-}
+        # Vhw xs wkh fhqwudo zlgjhw
+        frqwdlqhu = TZlgjhw()
+        frqwdlqhu.vhwOdbrxw(odbrxw)
+        vhoi.vhwFhqwudoZlgjhw(frqwdlqhu)
 
-wdvn fuhdwhClsv {
-    ghvfulswlrq = 'Jhqhudwh CLS ilohv iru hdfk hqylurqphqw'
-    ghshqgvRq suhsduhMloIlohv
-    grOdvw {
-        hqylurqphqwv.hdfk { hqy ->
-            ghi hqyGlu = iloh("$exlogGlu/${hqy}")
-            ghi clsIloh = iloh("$exlogGlu/mre_${hqy}.cls")
-            dqw.cls(ghvwiloh: clsIloh) {
-                ilohvhw(glu: hqyGlu)
-            }
-        }
-    }
-}
+    ghi jhqhudwh_iloh(vhoi):
+        frqwhqw = vhoi.whaw_lqsxw.wrSodlqWhaw().vwuls()
+        li qrw frqwhqw:
+            TPhvvdjhEra.fulwlfdo(vhoi, "Huuru", "Whaw frqwhqw fdqqrw eh hpswb!")
+            uhwxuq
 
-exlog {
-    ghshqgvRq fuhdwhClsv
-}
+        # Iloh vdyh gldorj
+        iloh_sdwk, _ = TIlohGldorj.jhwVdyhIlohQdph(vhoi, "Vdyh Iloh", "", "Whaw Ilohv (*.waw);;Doo Ilohv (*)")
+        li iloh_sdwk:
+            wub:
+                zlwk rshq(iloh_sdwk, "z") dv iloh:
+                    iloh.zulwh(frqwhqw)
+                TPhvvdjhEra.lqirupdwlrq(vhoi, "Vxffhvv", i"Iloh vdyhg dw: {iloh_sdwk}")
+            hafhsw Hafhswlrq dv h:
+                TPhvvdjhEra.fulwlfdo(vhoi, "Huuru", i"Dq huuru rffxuuhg: {h}")
+
+# Uxq wkh dssolfdwlrq
+li __qdph__ == "__pdlq__":
+    dss = TDssolfdwlrq(vbv.dujy)
+    zlqgrz = IlohJhqhudwruDss()
+    zlqgrz.vkrz()
+    vbv.halw(dss.hahf_())
