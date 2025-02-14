@@ -1,6 +1,7 @@
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import static io.restassured.RestAssured.*;
+import io.restassured.authentication.*;
 import java.util.*;
 
 public class AutoSysJobHandler {
@@ -10,10 +11,14 @@ public class AutoSysJobHandler {
     private static final String CHILD_JOBS_URL = "https://WSServer:9443/AEWS/job-run-info?filter=boxname==";
     private static final String FORCE_START_URL = "https://WSServer:9443/AEWS/event/force-start-job";
     private static final String JOB_RUN_INFO_URL = "https://WSServer:9443/AEWS/job-run-info/";
+    private static final String USERNAME = "apiUser";
+    private static final String PASSWORD = "apiPassword";
 
     public boolean manageAutoSysJob(String jobName) throws Exception {
+        RestAssured.authentication = basic(USERNAME, PASSWORD);
+
         // Capture initial status before force-start
-        Response initialJobInfo = get(JOB_INFO_URL + jobName);
+        Response initialJobInfo = given().auth().basic(USERNAME, PASSWORD).get(JOB_INFO_URL + jobName);
         String jobType = initialJobInfo.jsonPath().getString("jobType");
         String initialStatus = initialJobInfo.jsonPath().getString("status");
 
@@ -23,7 +28,7 @@ public class AutoSysJobHandler {
 
         // Capture and validate child job statuses for box jobs
         if ("BOX".equalsIgnoreCase(jobType)) {
-            Response initialChildJobs = get(CHILD_JOBS_URL + jobName);
+            Response initialChildJobs = given().auth().basic(USERNAME, PASSWORD).get(CHILD_JOBS_URL + jobName);
             List<Map<String, String>> initialChildStatuses = initialChildJobs.jsonPath().getList("jobRun");
             boolean anyChildRunning = initialChildStatuses.stream().anyMatch(child -> "1".equals(child.get("status")));
             if (anyChildRunning) {
@@ -31,8 +36,9 @@ public class AutoSysJobHandler {
             }
         }
 
-        // Force Start Job
-        Response startResponse = given().contentType("application/json")
+        // Force Start Job with Basic Authentication
+        Response startResponse = given().auth().basic(USERNAME, PASSWORD)
+                .contentType("application/json")
                 .body("{\"jobName\":\"" + jobName + "\",\"comment\":\"force start\"}")
                 .post(FORCE_START_URL);
         if (startResponse.getStatusCode() != 201) {
@@ -41,11 +47,11 @@ public class AutoSysJobHandler {
 
         // Polling for Status Change
         while (true) {
-            Response currentRunInfo = get(JOB_RUN_INFO_URL + jobName);
+            Response currentRunInfo = given().auth().basic(USERNAME, PASSWORD).get(JOB_RUN_INFO_URL + jobName);
             String currentStatus = currentRunInfo.jsonPath().getString("jobRun.status");
 
             if ("BOX".equalsIgnoreCase(jobType)) {
-                Response currentChildJobs = get(CHILD_JOBS_URL + jobName);
+                Response currentChildJobs = given().auth().basic(USERNAME, PASSWORD).get(CHILD_JOBS_URL + jobName);
                 List<Map<String, String>> currentChildStatuses = currentChildJobs.jsonPath().getList("jobRun");
                 boolean allChildrenDone = currentChildStatuses.stream().noneMatch(child -> "1".equals(child.get("status")));
                 boolean anyChildTerminated = currentChildStatuses.stream().anyMatch(child -> "6".equals(child.get("status")));
