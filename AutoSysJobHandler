@@ -1,0 +1,68 @@
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import static io.restassured.RestAssured.*;
+import java.util.*;
+
+public class AutoSysJobHandler {
+
+    // Externalized URLs
+    private static final String JOB_INFO_URL = "https://WSServer:9443/AEWS/job/";
+    private static final String CHILD_JOBS_URL = "https://WSServer:9443/AEWS/job-run-info?filter=boxname==";
+    private static final String FORCE_START_URL = "https://WSServer:9443/AEWS/event/force-start-job";
+    private static final String JOB_RUN_INFO_URL = "https://WSServer:9443/AEWS/job-run-info/";
+
+    public boolean manageAutoSysJob(String jobName) throws Exception {
+        // Capture initial status before force-start
+        Response initialJobInfo = get(JOB_INFO_URL + jobName);
+        String jobType = initialJobInfo.jsonPath().getString("jobType");
+        String initialStatus = initialJobInfo.jsonPath().getString("status");
+
+        if ("1".equals(initialStatus)) {
+            throw new Exception("Job is already running");
+        }
+
+        // Capture and validate child job statuses for box jobs
+        if ("BOX".equalsIgnoreCase(jobType)) {
+            Response initialChildJobs = get(CHILD_JOBS_URL + jobName);
+            List<Map<String, String>> initialChildStatuses = initialChildJobs.jsonPath().getList("jobRun");
+            boolean anyChildRunning = initialChildStatuses.stream().anyMatch(child -> "1".equals(child.get("status")));
+            if (anyChildRunning) {
+                throw new Exception("One or more child jobs are already running");
+            }
+        }
+
+        // Force Start Job
+        Response startResponse = given().contentType("application/json")
+                .body("{\"jobName\":\"" + jobName + "\",\"comment\":\"force start\"}")
+                .post(FORCE_START_URL);
+        if (startResponse.getStatusCode() != 201) {
+            throw new Exception("Failed to force start job");
+        }
+
+        // Polling for Status Change
+        while (true) {
+            Response currentRunInfo = get(JOB_RUN_INFO_URL + jobName);
+            String currentStatus = currentRunInfo.jsonPath().getString("jobRun.status");
+
+            if ("BOX".equalsIgnoreCase(jobType)) {
+                Response currentChildJobs = get(CHILD_JOBS_URL + jobName);
+                List<Map<String, String>> currentChildStatuses = currentChildJobs.jsonPath().getList("jobRun");
+                boolean allChildrenDone = currentChildStatuses.stream().noneMatch(child -> "1".equals(child.get("status")));
+                boolean anyChildTerminated = currentChildStatuses.stream().anyMatch(child -> "6".equals(child.get("status")));
+
+                if (anyChildTerminated) {
+                    throw new Exception("One or more child jobs terminated, box job still running");
+                }
+                if (allChildrenDone) {
+                    String parentBoxStatus = currentRunInfo.jsonPath().getString("jobRun.status");
+                    return "4".equals(parentBoxStatus);
+                }
+            } else {
+                if (!"1".equals(currentStatus)) {
+                    return "4".equals(currentStatus);
+                }
+            }
+            Thread.sleep(5000);
+        }
+    }
+}
