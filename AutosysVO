@@ -1,0 +1,64 @@
+import java.util.Objects;
+
+public class AutosysVO {
+    private String name;
+    private String jobType;
+    private int runNum;
+    private String startTime;
+    private String endTime;
+    private int retry;
+    private String status;
+
+    // Constructor
+    public AutosysVO(String name, String jobType, int runNum, String startTime, String endTime, int retry, String status) {
+        this.name = name;
+        this.jobType = jobType;
+        this.runNum = runNum;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.retry = retry;
+        this.status = status;
+    }
+
+    // Getters
+    public String getName() {
+        return name;
+    }
+
+    public String getJobType() {
+        return jobType;
+    }
+
+    // Overriding equals() and hashCode() for HashSet
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AutosysVO)) return false;
+        AutosysVO that = (AutosysVO) o;
+        return runNum == that.runNum &&
+               retry == that.retry &&
+               Objects.equals(name, that.name) &&
+               Objects.equals(jobType, that.jobType) &&
+               Objects.equals(startTime, that.startTime) &&
+               Objects.equals(endTime, that.endTime) &&
+               Objects.equals(status, that.status);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, jobType, runNum, startTime, endTime, retry, status);
+    }
+
+    @Override
+    public String toString() {
+        return "AutosysVO{" +
+                "name='" + name + '\'' +
+                ", jobType='" + jobType + '\'' +
+                ", runNum=" + runNum +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", retry=" + retry +
+                ", status='" + status + '\'' +
+                '}';
+    }
+}
