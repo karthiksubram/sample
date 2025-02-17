@@ -1,0 +1,89 @@
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.*;
+
+public class AutosysJobFetcher {
+
+    private static final String API_BASE_URL = "https://autosys.example.com/rest/v1";
+    private static final String API_TOKEN = "your_api_token";
+
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the parent box job name: ");
+        String parentBoxName = scanner.nextLine();
+        scanner.close();
+
+        // Store unique jobs in HashSet
+        Set<AutosysVO> autosysJobs = new HashSet<>();
+
+        // Fetch all jobs recursively
+        getJobsRecursively(parentBoxName, autosysJobs, new HashSet<>());
+
+        // Display all jobs
+        System.out.println("\n📊 All Jobs (Including Nested Boxes):");
+        for (AutosysVO job : autosysJobs) {
+            System.out.println(job);
+        }
+    }
+
+    /**
+     * Recursively fetches child jobs using the AutoSys REST API.
+     */
+    private static void getJobsRecursively(String boxName, Set<AutosysVO> autosysJobs, Set<String> visitedBoxes) {
+        // Avoid infinite recursion on circular references
+        if (visitedBoxes.contains(boxName)) {
+            return;
+        }
+        visitedBoxes.add(boxName);
+
+        // Make REST API call to get jobs inside the box
+        Response response = RestAssured.given()
+                .baseUri(API_BASE_URL)
+                .basePath("/jobs")
+                .header("Authorization", "Bearer " + API_TOKEN)
+                .header("Accept", "application/json")
+                .queryParam("box", boxName)
+                .queryParam("recursive", "false") // Only immediate children
+                .get();
+
+        if (response.getStatusCode() == 200) {
+            try {
+                JsonNode root = objectMapper.readTree(response.getBody().asString());
+                JsonNode jobs = root.get("jobs");
+
+                if (jobs != null && jobs.isArray()) {
+                    for (JsonNode job : jobs) {
+                        String name = job.has("name") ? job.get("name").asText() : "N/A";
+                        String type = job.has("type") ? job.get("type").asText() : "N/A";
+                        int runNum = job.has("runNum") ? job.get("runNum").asInt() : 0;
+                        String startTime = job.has("startTime") ? job.get("startTime").asText() : "N/A";
+                        String endTime = job.has("endTime") ? job.get("endTime").asText() : "N/A";
+                        int retry = job.has("retry") ? job.get("retry").asInt() : 0;
+                        String status = job.has("status") ? job.get("status").asText() : "N/A";
+
+                        // Create AutosysVO and add to HashSet
+                        AutosysVO autosysVO = new AutosysVO(name, type, runNum, startTime, endTime, retry, status);
+                        autosysJobs.add(autosysVO);
+
+                        // If it's a nested box, recurse
+                        if ("BOX".equalsIgnoreCase(type)) {
+                            System.out.println("📦 Found nested box: " + name);
+                            getJobsRecursively(name, autosysJobs, visitedBoxes);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                System.err.println("Error parsing response for box " + boxName + ": " + e.getMessage());
+            }
+        } else {
+            System.err.println("Failed to fetch jobs for box " + boxName +
+                    ". Status Code: " + response.getStatusCode() +
+                    " Response: " + response.getBody().asString());
+        }
+    }
+}
