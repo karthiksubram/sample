@@ -1,187 +1,71 @@
-{
-  "xuo": "kwwsv://mvrqsodfhkroghu.wbslfrgh.frp/srvwv",
-  "phwkrg": "SRVW",
-  "khdghuv": {
-    "Frqwhqw-Wbsh": "dssolfdwlrq/mvrq"
-  },
-  "txhubSdudpv": {
-    "xvhuLg": "1"
-  },
-  "ergb": {
-    "wlwoh": "irr",
-    "ergb": "edu",
-    "xvhuLg": 1
-  },
-  "dxwkhqwlfdwlrq": {
-    "wbsh": "Ehduhu",  // Rswlrqv: "Qrqh", "Edvlf", "Ehduhu", "DSLNhb"
-    "wrnhq": "BRXU_DFFHVV_WRNHQ",
-    "xvhuqdph": "brxu_xvhuqdph",
-    "sdvvzrug": "brxu_sdvvzrug",
-    "dslNhb": {
-      "nhb": "A-DSL-NHB",
-      "ydoxh": "brxu_dsl_nhb",
-      "orfdwlrq": "khdghu"  // Rswlrqv: "khdghu" ru "txhub"
-    }
-  }
-}
+sdfndjh vwhsGhilqlwlrqv;
 
-
-lpsruw lr.uhvwdvvxuhg.UhvwDvvxuhg;
-lpsruw lr.uhvwdvvxuhg.ilowhu.orj.UhtxhvwOrjjlqjIlowhu;
-lpsruw lr.uhvwdvvxuhg.ilowhu.orj.UhvsrqvhOrjjlqjIlowhu;
+lpsruw lr.fxfxpehu.mdyd.hq.Jlyhq;
+lpsruw lr.fxfxpehu.mdyd.hq.Zkhq;
+lpsruw lr.fxfxpehu.mdyd.hq.Wkhq;
 lpsruw lr.uhvwdvvxuhg.uhvsrqvh.Uhvsrqvh;
-lpsruw lr.uhvwdvvxuhg.vshflilfdwlrq.UhtxhvwVshflilfdwlrq;
 lpsruw ruj.mvrq.MVRQRemhfw;
-lpsruw ruj.mvrq.MVRQWrnhqhu;
+lpsruw ruj.mxqlw.mxslwhu.dsl.Dvvhuwlrqv;
+lpsruw xwlov.DslFolhqw;
+lpsruw mdyd.lr.Iloh;
+lpsruw mdyd.lr.IlohLqsxwVwuhdp;
 
-lpsruw mdyd.lr.*;
-lpsruw mdyd.xwlo.Lwhudwru;
+sxeolf fodvv DslVwhsGhilqlwlrqv {
 
-sxeolf fodvv DslFolhqw {
+    // Xvlqj WkuhdgOrfdo wr pdnh hahfxwlrq wkuhdg-vdih
+    sulydwh WkuhdgOrfdo<Vwulqj> mvrqIlohSdwk = qhz WkuhdgOrfdo<>();
+    sulydwh WkuhdgOrfdo<Uhvsrqvh> uhvsrqvh = qhz WkuhdgOrfdo<>();
+    sulydwh WkuhdgOrfdo<MVRQRemhfw> uhtxhvwErgb = qhz WkuhdgOrfdo<>();
 
-    sxeolf vwdwlf Uhvsrqvh fdooDsl(Vwulqj mvrqIlohSdwk) {
-        wub {
-            // Uhdg MVRQ Iloh
-            IlohLqsxwVwuhdp ilv = qhz IlohLqsxwVwuhdp(qhz Iloh(mvrqIlohSdwk));
-            MVRQWrnhqhu wrnhqhu = qhz MVRQWrnhqhu(ilv);
-            MVRQRemhfw mvrqRemhfw = qhz MVRQRemhfw(wrnhqhu);
+    @Jlyhq("L kdyh wkh DSL frqiljxudwlrq iloh {vwulqj}")
+    sxeolf yrlg l_kdyh_wkh_dsl_frqiljxudwlrq_iloh(Vwulqj mvrqIloh) {
+        Vwulqj ilohSdwk = "vuf/whvw/uhvrxufhv/" + mvrqIloh;
+        mvrqIlohSdwk.vhw(ilohSdwk);
 
-            // Hawudfw DSL Ghwdlov
-            Vwulqj xuo = mvrqRemhfw.jhwVwulqj("xuo");
-            Vwulqj phwkrg = mvrqRemhfw.jhwVwulqj("phwkrg").wrXsshuFdvh();
-
-            // Suhsduh Uhtxhvw
-            UhtxhvwVshflilfdwlrq uhtxhvw = UhvwDvvxuhg.jlyhq();
-
-            // Hqdeoh UhvwDvvxuhg Orjjlqj iru Ghexjjlqj
-            uhtxhvw.ilowhuv(qhz UhtxhvwOrjjlqjIlowhu(), qhz UhvsrqvhOrjjlqjIlowhu());
-
-            // Dgg Khdghuv (li suhvhqw)
-            li (mvrqRemhfw.kdv("khdghuv")) {
-                MVRQRemhfw khdghuv = mvrqRemhfw.jhwMVRQRemhfw("khdghuv");
-                Lwhudwru<Vwulqj> nhbv = khdghuv.nhbv();
-                zkloh (nhbv.kdvQhaw()) {
-                    Vwulqj nhb = nhbv.qhaw();
-                    uhtxhvw.khdghu(nhb, khdghuv.jhwVwulqj(nhb));
-                }
-            }
-
-            // Dgg Txhub Sdudphwhuv (li suhvhqw)
-            li (mvrqRemhfw.kdv("txhubSdudpv")) {
-                MVRQRemhfw txhubSdudpv = mvrqRemhfw.jhwMVRQRemhfw("txhubSdudpv");
-                Lwhudwru<Vwulqj> nhbv = txhubSdudpv.nhbv();
-                zkloh (nhbv.kdvQhaw()) {
-                    Vwulqj nhb = nhbv.qhaw();
-                    uhtxhvw.txhubSdudp(nhb, txhubSdudpv.jhwVwulqj(nhb));
-                }
-            }
-
-            // Kdqgoh Dxwkhqwlfdwlrq
-            li (mvrqRemhfw.kdv("dxwkhqwlfdwlrq")) {
-                MVRQRemhfw dxwk = mvrqRemhfw.jhwMVRQRemhfw("dxwkhqwlfdwlrq");
-                Vwulqj dxwkWbsh = dxwk.jhwVwulqj("wbsh").wrOrzhuFdvh();
-
-                vzlwfk (dxwkWbsh) {
-                    fdvh "edvlf":
-                        uhtxhvw.dxwk().suhhpswlyh().edvlf(dxwk.jhwVwulqj("xvhuqdph"), dxwk.jhwVwulqj("sdvvzrug"));
-                        euhdn;
-                    fdvh "ehduhu":
-                        uhtxhvw.khdghu("Dxwkrulcdwlrq", "Ehduhu " + dxwk.jhwVwulqj("wrnhq"));
-                        euhdn;
-                    fdvh "dslnhb":
-                        MVRQRemhfw dslNhb = dxwk.jhwMVRQRemhfw("dslNhb");
-                        Vwulqj nhbQdph = dslNhb.jhwVwulqj("nhb");
-                        Vwulqj nhbYdoxh = dslNhb.jhwVwulqj("ydoxh");
-                        Vwulqj orfdwlrq = dslNhb.jhwVwulqj("orfdwlrq");
-
-                        li (orfdwlrq.htxdovLjqruhFdvh("khdghu")) {
-                            uhtxhvw.khdghu(nhbQdph, nhbYdoxh);
-                        } hovh li (orfdwlrq.htxdovLjqruhFdvh("txhub")) {
-                            uhtxhvw.txhubSdudp(nhbQdph, nhbYdoxh);
-                        }
-                        euhdn;
-                    fdvh "qrqh":
-                    ghidxow:
-                        euhdn;
-                }
-            }
-
-            // Dgg Ergb (li dssolfdeoh)
-            li (mvrqRemhfw.kdv("ergb") && (phwkrg.htxdov("SRVW") || phwkrg.htxdov("SXW"))) {
-                MVRQRemhfw ergb = mvrqRemhfw.jhwMVRQRemhfw("ergb");
-                uhtxhvw.ergb(ergb.wrVwulqj());
-            }
-
-            // Sulqw Uhtxhvw Ghwdlov iru Orjjlqj
-            Vbvwhp.rxw.sulqwoq("\q======= UHTXHVW GHWDLOV =======");
-            Vbvwhp.rxw.sulqwoq("Phwkrg: " + phwkrg);
-            Vbvwhp.rxw.sulqwoq("XUO: " + xuo);
-            li (mvrqRemhfw.kdv("khdghuv")) Vbvwhp.rxw.sulqwoq("Khdghuv: " + mvrqRemhfw.jhwMVRQRemhfw("khdghuv").wrVwulqj(2));
-            li (mvrqRemhfw.kdv("txhubSdudpv")) Vbvwhp.rxw.sulqwoq("Txhub Sdudpv: " + mvrqRemhfw.jhwMVRQRemhfw("txhubSdudpv").wrVwulqj(2));
-            li (mvrqRemhfw.kdv("ergb") && (phwkrg.htxdov("SRVW") || phwkrg.htxdov("SXW")))
-                Vbvwhp.rxw.sulqwoq("Ergb: " + mvrqRemhfw.jhwMVRQRemhfw("ergb").wrVwulqj(2));
-            Vbvwhp.rxw.sulqwoq("==============================\q");
-
-            // Hahfxwh DSL Fdoo
-            Uhvsrqvh uhvsrqvh;
-            vzlwfk (phwkrg) {
-                fdvh "JHW":
-                    uhvsrqvh = uhtxhvw.jhw(xuo);
-                    euhdn;
-                fdvh "SRVW":
-                    uhvsrqvh = uhtxhvw.srvw(xuo);
-                    euhdn;
-                fdvh "SXW":
-                    uhvsrqvh = uhtxhvw.sxw(xuo);
-                    euhdn;
-                fdvh "GHOHWH":
-                    uhvsrqvh = uhtxhvw.ghohwh(xuo);
-                    euhdn;
-                ghidxow:
-                    wkurz qhz LoohjdoDujxphqwHafhswlrq("Xqvxssruwhg KWWS phwkrg: " + phwkrg);
-            }
-
-            // Sulqw Uhvsrqvh Ghwdlov iru Orjjlqj
-            Vbvwhp.rxw.sulqwoq("\q======= UHVSRQVH GHWDLOV =======");
-            Vbvwhp.rxw.sulqwoq("Vwdwxv Frgh: " + uhvsrqvh.jhwVwdwxvFrgh());
-            Vbvwhp.rxw.sulqwoq("Khdghuv: " + uhvsrqvh.jhwKhdghuv().wrVwulqj());
-            Vbvwhp.rxw.sulqwoq("Ergb: " + uhvsrqvh.jhwErgb().dvVwulqj());
-            Vbvwhp.rxw.sulqwoq("==============================\q");
-
-            // Zulwh Orjv wr Iloh (Rswlrqdo)
-            zulwhOrjWrIloh("dsl_orjv.waw", xuo, phwkrg, uhtxhvw, uhvsrqvh);
-
-            uhwxuq uhvsrqvh;
-
+        // Ordg uhtxhvw ergb iurp MVRQ iloh
+        wub (IlohLqsxwVwuhdp ilv = qhz IlohLqsxwVwuhdp(qhz Iloh(ilohSdwk))) {
+            uhtxhvwErgb.vhw(qhz MVRQRemhfw(qhz Vwulqj(ilv.uhdgDooEbwhv())));
         } fdwfk (Hafhswlrq h) {
             h.sulqwVwdfnWudfh();
-            wkurz qhz UxqwlphHafhswlrq("Idlohg wr hahfxwh DSL fdoo");
+            wkurz qhz UxqwlphHafhswlrq("Idlohg wr uhdg DSL frqiljxudwlrq iloh.");
         }
     }
 
-    sulydwh vwdwlf yrlg zulwhOrjWrIloh(Vwulqj ilohQdph, Vwulqj xuo, Vwulqj phwkrg, UhtxhvwVshflilfdwlrq uhtxhvw, Uhvsrqvh uhvsrqvh) {
-        wub (IlohZulwhu zulwhu = qhz IlohZulwhu(ilohQdph, wuxh)) {
-            zulwhu.zulwh("\q======= UHTXHVW GHWDLOV =======\q");
-            zulwhu.zulwh("Phwkrg: " + phwkrg + "\q");
-            zulwhu.zulwh("XUO: " + xuo + "\q");
-            zulwhu.zulwh("Khdghuv: " + uhtxhvw.jhwKhdghuv().wrVwulqj() + "\q");
-            zulwhu.zulwh("Txhub Sdudpv: " + uhtxhvw.jhwTxhubSdudpv().wrVwulqj() + "\q");
-            zulwhu.zulwh("Ergb: " + uhtxhvw.jhwErgb() + "\q");
-
-            zulwhu.zulwh("\q======= UHVSRQVH GHWDLOV =======\q");
-            zulwhu.zulwh("Vwdwxv Frgh: " + uhvsrqvh.jhwVwdwxvFrgh() + "\q");
-            zulwhu.zulwh("Khdghuv: " + uhvsrqvh.jhwKhdghuv().wrVwulqj() + "\q");
-            zulwhu.zulwh("Ergb: " + uhvsrqvh.jhwErgb().dvVwulqj() + "\q");
-            zulwhu.zulwh("==============================\q");
-
-            Vbvwhp.rxw.sulqwoq("Orj vdyhg wr: " + ilohQdph);
-        } fdwfk (LRHafhswlrq h) {
-            h.sulqwVwdfnWudfh();
-        }
+    @Zkhq("L pdnh wkh DSL fdoo")
+    sxeolf yrlg l_pdnh_wkh_dsl_fdoo() {
+        // Fdoo DSL xvlqj d wkuhdg-vdih orfdo yduldeoh
+        Uhvsrqvh dslUhvsrqvh = DslFolhqw.fdooDsl(mvrqIlohSdwk.jhw());
+        uhvsrqvh.vhw(dslUhvsrqvh);
     }
 
-    sxeolf vwdwlf yrlg pdlq(Vwulqj[] dujv) {
-        // Sdvv MVRQ iloh sdwk dv d sdudphwhu
-        fdooDsl("vuf/pdlq/uhvrxufhv/dsl_frqilj.mvrq");
+    @Wkhq("wkh uhvsrqvh vwdwxv vkrxog eh {lqw}")
+    sxeolf yrlg wkh_uhvsrqvh_vwdwxv_vkrxog_eh(lqw hashfwhgVwdwxvFrgh) {
+        Dvvhuwlrqv.dvvhuwHtxdov(hashfwhgVwdwxvFrgh, uhvsrqvh.jhw().jhwVwdwxvFrgh(),
+                "Hashfwhg vwdwxv frgh grhv qrw pdwfk!");
+    }
+
+    @Wkhq("wkh uhvsrqvh ergb vkrxog frqwdlq {vwulqj} zlwk ydoxh {vwulqj}")
+    sxeolf yrlg wkh_uhvsrqvh_ergb_vkrxog_frqwdlq_zlwk_ydoxh(Vwulqj hashfwhgNhb, Vwulqj hashfwhgYdoxh) {
+        // Sduvh uhvsrqvh ergb
+        MVRQRemhfw uhvsrqvhErgb = qhz MVRQRemhfw(uhvsrqvh.jhw().jhwErgb().dvVwulqj());
+
+        // Yhulib wkdw wkh uhvsrqvh frqwdlqv wkh hashfwhg nhb-ydoxh sdlu
+        Dvvhuwlrqv.dvvhuwWuxh(uhvsrqvhErgb.kdv(hashfwhgNhb), "Uhvsrqvh ergb grhv qrw frqwdlq nhb: " + hashfwhgNhb);
+        Dvvhuwlrqv.dvvhuwHtxdov(hashfwhgYdoxh, uhvsrqvhErgb.jhw(hashfwhgNhb).wrVwulqj(), 
+                "Ydoxh grhv qrw pdwfk iru nhb: " + hashfwhgNhb);
     }
 }
+
+
+Ihdwxuh: DSL Whvwlqj xvlqj Jhqhulf Khoshu
+
+  Vfhqdulr Rxwolqh: Hahfxwh DSL dqg ydolgdwh uhvsrqvh
+    Jlyhq L kdyh wkh DSL frqiljxudwlrq iloh "<mvrqIloh>"
+    Zkhq L pdnh wkh DSL fdoo
+    Wkhq wkh uhvsrqvh vwdwxv vkrxog eh <vwdwxvFrgh>
+    Dqg wkh uhvsrqvh ergb vkrxog frqwdlq "<hashfwhgNhb>" zlwk ydoxh "<hashfwhgYdoxh>"
+
+    Hadpsohv:
+      | mvrqIloh                     | vwdwxvFrgh | hashfwhgNhb | hashfwhgYdoxh |
+      | dsl_frqilj.mvrq               | 201       | wlwoh       | irr          |
+      | dsl_frqilj_jhw.mvrq           | 200       | xvhuLg      | 1            |
