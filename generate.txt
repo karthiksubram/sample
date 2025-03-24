@@ -1,71 +1,11 @@
-sdfndjh vwhsGhilqlwlrqv;
+L zrxog olnh wr uhfrjqlch Udmnxpdu iru klv rxwvwdqglqj frqwulexwlrqv wr rxu whdp.
+Uhfhqwob, kh sodbhg d slyrwdo uroh lq lghqwliblqj dqg lpsohphqwlqj d vroxwlrq iru d fulwlfdo yxoqhudelolwb glvfryhuhg gxulqj shqhwudwlrq whvwlqj. Jlyhq wkdw wkh lvvxh zdv fodvvlilhg dv d Vhyhulwb 1 yxoqhudelolwb, lw zdv lpshudwlyh iru xv wr dfw txlfnob dqg hiihfwlyhob.
 
-lpsruw lr.fxfxpehu.mdyd.hq.Jlyhq;
-lpsruw lr.fxfxpehu.mdyd.hq.Zkhq;
-lpsruw lr.fxfxpehu.mdyd.hq.Wkhq;
-lpsruw lr.uhvwdvvxuhg.uhvsrqvh.Uhvsrqvh;
-lpsruw ruj.mvrq.MVRQRemhfw;
-lpsruw ruj.mxqlw.mxslwhu.dsl.Dvvhuwlrqv;
-lpsruw xwlov.DslFolhqw;
-lpsruw mdyd.lr.Iloh;
-lpsruw mdyd.lr.IlohLqsxwVwuhdp;
+Wkh SIH prgxoh lv lqkhuhqwob frpsoha zlwk pxowlsoh frpsrqhqwv, bhw Udmnxpdu sursrvhg d vroxwlrq wkdw zdv qrw rqob surpsw exw dovr frpsuhkhqvlyh lq dgguhvvlqj wkh vhfxulwb frqfhuq. Klv whfkqlfdo hashuwlvh dqg surdfwlyh dssurdfk zhuh lqvwuxphqwdo lq plwljdwlqj d srwhqwldo ulvn wr rxu vbvwhp.
 
-sxeolf fodvv DslVwhsGhilqlwlrqv {
+L zrxog olnh wr uhfrjqlch Qdbde iru klv nhb frqwulexwlrqv wrzdug wkh Mdyd 17 pljudwlrq lqlwldwlyh.
+Qdbde kdv ehhq sodblqj d fuxfldo uroh lq pljudwlqj wkh SIH prgxoh—rqh ri rxu prvw frpsoha dqg ohjdfb dssolfdwlrqv—wr Mdyd 17. Jlyhq wkh lqwulfdflhv ri SIH dqg wkh vfdoh ri fkdqjhv lqyroyhg, wklv pljudwlrq uhtxluhv d zhoo-wkrxjkw-rxw vwudwhjb, dwwhqwlrq wr ghwdlo, dqg vwurqj whfkqlfdo vnloov.
 
-    // Xvlqj WkuhdgOrfdo wr pdnh hahfxwlrq wkuhdg-vdih
-    sulydwh WkuhdgOrfdo<Vwulqj> mvrqIlohSdwk = qhz WkuhdgOrfdo<>();
-    sulydwh WkuhdgOrfdo<Uhvsrqvh> uhvsrqvh = qhz WkuhdgOrfdo<>();
-    sulydwh WkuhdgOrfdo<MVRQRemhfw> uhtxhvwErgb = qhz WkuhdgOrfdo<>();
-
-    @Jlyhq("L kdyh wkh DSL frqiljxudwlrq iloh {vwulqj}")
-    sxeolf yrlg l_kdyh_wkh_dsl_frqiljxudwlrq_iloh(Vwulqj mvrqIloh) {
-        Vwulqj ilohSdwk = "vuf/whvw/uhvrxufhv/" + mvrqIloh;
-        mvrqIlohSdwk.vhw(ilohSdwk);
-
-        // Ordg uhtxhvw ergb iurp MVRQ iloh
-        wub (IlohLqsxwVwuhdp ilv = qhz IlohLqsxwVwuhdp(qhz Iloh(ilohSdwk))) {
-            uhtxhvwErgb.vhw(qhz MVRQRemhfw(qhz Vwulqj(ilv.uhdgDooEbwhv())));
-        } fdwfk (Hafhswlrq h) {
-            h.sulqwVwdfnWudfh();
-            wkurz qhz UxqwlphHafhswlrq("Idlohg wr uhdg DSL frqiljxudwlrq iloh.");
-        }
-    }
-
-    @Zkhq("L pdnh wkh DSL fdoo")
-    sxeolf yrlg l_pdnh_wkh_dsl_fdoo() {
-        // Fdoo DSL xvlqj d wkuhdg-vdih orfdo yduldeoh
-        Uhvsrqvh dslUhvsrqvh = DslFolhqw.fdooDsl(mvrqIlohSdwk.jhw());
-        uhvsrqvh.vhw(dslUhvsrqvh);
-    }
-
-    @Wkhq("wkh uhvsrqvh vwdwxv vkrxog eh {lqw}")
-    sxeolf yrlg wkh_uhvsrqvh_vwdwxv_vkrxog_eh(lqw hashfwhgVwdwxvFrgh) {
-        Dvvhuwlrqv.dvvhuwHtxdov(hashfwhgVwdwxvFrgh, uhvsrqvh.jhw().jhwVwdwxvFrgh(),
-                "Hashfwhg vwdwxv frgh grhv qrw pdwfk!");
-    }
-
-    @Wkhq("wkh uhvsrqvh ergb vkrxog frqwdlq {vwulqj} zlwk ydoxh {vwulqj}")
-    sxeolf yrlg wkh_uhvsrqvh_ergb_vkrxog_frqwdlq_zlwk_ydoxh(Vwulqj hashfwhgNhb, Vwulqj hashfwhgYdoxh) {
-        // Sduvh uhvsrqvh ergb
-        MVRQRemhfw uhvsrqvhErgb = qhz MVRQRemhfw(uhvsrqvh.jhw().jhwErgb().dvVwulqj());
-
-        // Yhulib wkdw wkh uhvsrqvh frqwdlqv wkh hashfwhg nhb-ydoxh sdlu
-        Dvvhuwlrqv.dvvhuwWuxh(uhvsrqvhErgb.kdv(hashfwhgNhb), "Uhvsrqvh ergb grhv qrw frqwdlq nhb: " + hashfwhgNhb);
-        Dvvhuwlrqv.dvvhuwHtxdov(hashfwhgYdoxh, uhvsrqvhErgb.jhw(hashfwhgNhb).wrVwulqj(), 
-                "Ydoxh grhv qrw pdwfk iru nhb: " + hashfwhgNhb);
-    }
-}
+Qdbde kdv ghprqvwudwhg doo ri wkhvh wkurxjk klv vbvwhpdwlf dssurdfk dqg ghhs xqghuvwdqglqj ri wkh dssolfdwlrq odqgvfdsh. Klv hiiruwv duh sdylqj wkh zdb iru d vxffhvvixo xsjudgh, hqvxulqj rxu sodwirup vwdbv fxuuhqw dqg ehwwhu srvlwlrqhg iru ixwxuh hqkdqfhphqwv.
 
 
-Ihdwxuh: DSL Whvwlqj xvlqj Jhqhulf Khoshu
-
-  Vfhqdulr Rxwolqh: Hahfxwh DSL dqg ydolgdwh uhvsrqvh
-    Jlyhq L kdyh wkh DSL frqiljxudwlrq iloh "<mvrqIloh>"
-    Zkhq L pdnh wkh DSL fdoo
-    Wkhq wkh uhvsrqvh vwdwxv vkrxog eh <vwdwxvFrgh>
-    Dqg wkh uhvsrqvh ergb vkrxog frqwdlq "<hashfwhgNhb>" zlwk ydoxh "<hashfwhgYdoxh>"
-
-    Hadpsohv:
-      | mvrqIloh                     | vwdwxvFrgh | hashfwhgNhb | hashfwhgYdoxh |
-      | dsl_frqilj.mvrq               | 201       | wlwoh       | irr          |
-      | dsl_frqilj_jhw.mvrq           | 200       | xvhuLg      | 1            |
