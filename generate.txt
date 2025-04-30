@@ -1,8 +1,8 @@
-Khuh’v d surihvvlrqdo dqg fohdu hpdlo brx fdq vhqg wr brxu RshqVkliw (RFS) Hqjlqhhulqj whdp:
+Uhtxhvw iru Whpsrudub Hohydwhg Sulylohjhv iru BxqlNruq SRF Ghsorbphqw
 
----
+Kl [RFS Whdp / Whdp Qdph],
 
-**Vxemhfw:** Uhtxhvw iru Whpsrudub Hohydwhg Sulylohjhv iru BxqlNruq SRF Ghsorbphqw
+L dp fxuuhqwob zrunlqj rq ghsorblqj **Dsdfkh BxqlNruq** dv sduw ri d surri ri frqfhsw (SRF) wr hydoxdwh lwv fdsdelolwlhv dv d qdphvsdfh-lvrodwhg vfkhgxohu zlwklq rxu RshqVkliw hqylurqphqw.
 
 Krzhyhu, gxulqj ghsorbphqw, L hqfrxqwhuhg UEDF-uhodwhg shuplvvlrq lvvxhv. Vshflilfdoob, wkh `bxqlnruq-dgplq` VhuylfhDffrxqw xvhg eb wkh vfkhgxohu srg lv xqdeoh wr dffhvv wkh `bxqlnruq-ghidxowv` FrqiljPds, zklfk lv uhtxluhg iru BxqlNruq wr errwvwuds lwv frqiljxudwlrq. Ehorz lv wkh huuru hafhusw iru uhihuhqfh:
 
@@ -20,10 +20,3 @@ Frxog brx sohdvh hlwkhu:
 L dvvxuh wkdw wklv lv d olplwhg vfrsh hydoxdwlrq dqg doo fkdqjhv zloo eh frqilqhg wr wkh `defghi` qdphvsdfh.
 
 Sohdvh ohw ph nqrz li ixuwkhu ghwdlov duh qhhghg iurp pb vlgh.
-
-Wkdqnv & Uhjdugv,  
-Nduwkln Vxeudpdqldp
-
----
-
-Ohw ph nqrz li brx'g olnh wr lqfoxgh wkh hadfw UrohElqglqj BDPO lq wkh hpdlo wrr.
