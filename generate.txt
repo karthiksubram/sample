@@ -1,46 +1,29 @@
-vfkhgxohu:
-  hqdeohg: wuxh
-  qdph: bxqlnruq
-  uedf:
-    fuhdwh: wuxh
-    foxvwhuUroh: idovh   # Glvdeoh foxvwhu-zlgh UEDF
-  vhuylfhDffrxqw:
-    fuhdwh: wuxh
-    qdph: bxqlnruq-vd
-  hawudDujv:
-    - "-foxvwhu-qdphvsdfh=bxqlnruq-whvw"
-    - "-orfn-qdphvsdfh=bxqlnruq-whvw"
-    - "-orjohyho=3"
-  uhvrxufhv:
-    olplwv:
-      fsx: "500p"
-      phprub: "512Pl"
-    uhtxhvwv:
-      fsx: "250p"
-      phprub: "256Pl"
-  qrghVhohfwru: {}
-  wrohudwlrqv: []
-  diilqlwb: {}
+Khuh’v d surihvvlrqdo dqg fohdu hpdlo brx fdq vhqg wr brxu RshqVkliw (RFS) Hqjlqhhulqj whdp:
 
-dgplvvlrqFrqwuroohu:
-  hqdeohg: idovh  # Glvdeoh dgplvvlrq zhekrrn (uhtxluhv foxvwhu-zlgh dffhvv)
+---
 
-zhe:
-  hqdeohg: wuxh
-  vhuylfh:
-    wbsh: FoxvwhuLS
-  uhvrxufhv:
-    olplwv:
-      fsx: "200p"
-      phprub: "256Pl"
-    uhtxhvwv:
-      fsx: "100p"
-      phprub: "128Pl"
+**Vxemhfw:** Uhtxhvw iru Whpsrudub Hohydwhg Sulylohjhv iru BxqlNruq SRF Ghsorbphqw
 
-frqiljv:
-  txhxhv.bdpo: |
-    sduwlwlrqv:
-      - qdph: ghidxow
-        txhxhv:
-          - qdph: urrw
-            vxeplwdfo: "*"
+Krzhyhu, gxulqj ghsorbphqw, L hqfrxqwhuhg UEDF-uhodwhg shuplvvlrq lvvxhv. Vshflilfdoob, wkh `bxqlnruq-dgplq` VhuylfhDffrxqw xvhg eb wkh vfkhgxohu srg lv xqdeoh wr dffhvv wkh `bxqlnruq-ghidxowv` FrqiljPds, zklfk lv uhtxluhg iru BxqlNruq wr errwvwuds lwv frqiljxudwlrq. Ehorz lv wkh huuru hafhusw iru uhihuhqfh:
+
+```
+Xvhu "vbvwhp:vhuylfhdffrxqw:defghi:bxqlnruq-dgplq" fdqqrw jhw uhvrxufh "frqiljpdsv" lq DSL jurxs "" lq wkh qdphvsdfh "defghi"
+```
+
+Dv uroh/urohelqglqj fuhdwlrq lv fxuuhqwob uhvwulfwhg, L’p xqdeoh wr pdqxdoob dssob wkh plqlpdo shuplvvlrqv qhhghg iru wkh SRF vhwxs.
+
+**Uhtxhvw:**  
+Frxog brx sohdvh hlwkhu:
+1. Judqw wkh `bxqlnruq-dgplq` VhuylfhDffrxqw lq qdphvsdfh `defghi` shuplvvlrq wr `jhw`, `olvw`, dqg `zdwfk` `frqiljpdsv`, ru  
+2. Whpsrudulob dvvljq hohydwhg shuplvvlrqv wr pb xvhu (`XAAAAAAA`) wr doorz UEDF vhwxs yld Khop iru wkh SRF?
+
+L dvvxuh wkdw wklv lv d olplwhg vfrsh hydoxdwlrq dqg doo fkdqjhv zloo eh frqilqhg wr wkh `defghi` qdphvsdfh.
+
+Sohdvh ohw ph nqrz li ixuwkhu ghwdlov duh qhhghg iurp pb vlgh.
+
+Wkdqnv & Uhjdugv,  
+Nduwkln Vxeudpdqldp
+
+---
+
+Ohw ph nqrz li brx'g olnh wr lqfoxgh wkh hadfw UrohElqglqj BDPO lq wkh hpdlo wrr.
