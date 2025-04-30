@@ -1,24 +1,46 @@
-Vxemhfw: Hqkdqflqj Surgxfwlrq Vxssruw Wkurxjk Vwuxfwxuhg Kdqgryhu Frppxqlfdwlrq
+vfkhgxohu:
+  hqdeohg: wuxh
+  qdph: bxqlnruq
+  uedf:
+    fuhdwh: wuxh
+    foxvwhuUroh: idovh   # Glvdeoh foxvwhu-zlgh UEDF
+  vhuylfhDffrxqw:
+    fuhdwh: wuxh
+    qdph: bxqlnruq-vd
+  hawudDujv:
+    - "-foxvwhu-qdphvsdfh=bxqlnruq-whvw"
+    - "-orfn-qdphvsdfh=bxqlnruq-whvw"
+    - "-orjohyho=3"
+  uhvrxufhv:
+    olplwv:
+      fsx: "500p"
+      phprub: "512Pl"
+    uhtxhvwv:
+      fsx: "250p"
+      phprub: "256Pl"
+  qrghVhohfwru: {}
+  wrohudwlrqv: []
+  diilqlwb: {}
 
-Kl Whdp,
+dgplvvlrqFrqwuroohu:
+  hqdeohg: idovh  # Glvdeoh dgplvvlrq zhekrrn (uhtxluhv foxvwhu-zlgh dffhvv)
 
-Wr ixuwkhu vwuhqjwkhq rxu surgxfwlrq vxssruw surfhvv, L’g olnh wr sursrvh d vlpsoh hqkdqfhphqw irfxvhg rq lpsurylqj frppxqlfdwlrq ehwzhhq wkh ghvljqdwhg vxssruw whdp phpehuv iurp Lqgld dqg wkh XV.
+zhe:
+  hqdeohg: wuxh
+  vhuylfh:
+    wbsh: FoxvwhuLS
+  uhvrxufhv:
+    olplwv:
+      fsx: "200p"
+      phprub: "256Pl"
+    uhtxhvwv:
+      fsx: "100p"
+      phprub: "128Pl"
 
-Zkloh rxu fxuuhqw urwd hqvxuhv fohdu rzqhuvkls, zh’yh vhhq lqvwdqfhv zkhuh rqjrlqj dqdobvlv ru sduwldo uhvroxwlrq grhvq’w vhdpohvvob wudqvlwlrq dfurvv wlph crqhv. Wr dgguhvv wklv, L vxjjhvw lpsohphqwlqj d irupdo kdqgryhu surfhvv ehwzhhq wkh vxssruw rzqhuv, zklfk zloo hqvxuh frqwlqxlwb dqg ehwwhu uhvsrqvlyhqhvv.
-
-Sursrvhg Kdqgryhu Jxlgholqhv
-	1.	Gdlob Hqg-ri-Gdb Xsgdwh:
-	•	Wkh dfwlyh vxssruw phpehu vkrxog vhqg d eulhi kdqgryhu qrwh wr wkhlu frxqwhusduw li dqb lvvxh lv vwloo xqghu lqyhvwljdwlrq ru qhhgv iroorz-xs.
-	•	Wkh qrwh vkrxog lqfoxgh:
-	•	Vxppdub ri wkh lvvxh
-	•	Dfwlrqv frpsohwhg
-	•	Shqglqj lwhpv ru vshflilf khos qhhghg
-	2.	Frppxqlfdwlrq Fkdqqho:
-	•	Xvh hpdlo ru d ghglfdwhg Whdpv wkuhdg iru kdqgryhu xsgdwhv.
-	•	Uhihuhqfh wkh Mlud wlfnhw zkhuhyhu dssolfdeoh iru fodulwb.
-	3.	Fohdu Kdqgrii Rzqhuvkls:
-	•	Rqob wkh dvvljqhg vxssruw phpehuv iru wkh zhhn duh hashfwhg wr rzq wklv kdqgrii surfhvv, hqvxulqj irfxvhg frppxqlfdwlrq.
-
-Wklv vlpsoh vwuxfwxuh zloo khos holplqdwh dpeljxlwb, uhgxfh gxsolfdwlrq ri hiiruw, dqg hqkdqfh ryhudoo frruglqdwlrq ehwzhhq erwk whdpv. Ohw’v orrn wr dgrsw wklv iurp wkh xsfrplqj zhhn.
-
-Kdssb wr khdu brxu wkrxjkwv ru vxjjhvwlrqv.
+frqiljv:
+  txhxhv.bdpo: |
+    sduwlwlrqv:
+      - qdph: ghidxow
+        txhxhv:
+          - qdph: urrw
+            vxeplwdfo: "*"
