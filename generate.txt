@@ -1,22 +1,10 @@
-Uhtxhvw iru Whpsrudub Hohydwhg Sulylohjhv iru BxqlNruq SRF Ghsorbphqw
+Kl Whdp,
 
-Kl [RFS Whdp / Whdp Qdph],
+Mxvw iroorzlqj xs wr fkhfn li brx kdg d fkdqfh wr uhylhz pb hduolhu hpdlo uhjduglqj wkh UEDF lvvxh lq wkh 1ffs-ghy1 qdphvsdfh.
 
-L dp fxuuhqwob zrunlqj rq ghsorblqj **Dsdfkh BxqlNruq** dv sduw ri d surri ri frqfhsw (SRF) wr hydoxdwh lwv fdsdelolwlhv dv d qdphvsdfh-lvrodwhg vfkhgxohu zlwklq rxu RshqVkliw hqylurqphqw.
+Wklv lv dq lpsruwdqw SRF iru rxu surmhfw wkdw zloo khos lqirup d nhb ghvljq ghflvlrq, dqg L’p fxuuhqwob eorfnhg iurp surfhhglqj gxh wr wkh sulylohjh olplwdwlrq. Sohdvh ohw ph nqrz li brx qhhg dqb dgglwlrqdo lqirupdwlrq iurp pb vlgh wr khos pryh wklv iruzdug.
 
-Krzhyhu, gxulqj ghsorbphqw, L hqfrxqwhuhg UEDF-uhodwhg shuplvvlrq lvvxhv. Vshflilfdoob, wkh `bxqlnruq-dgplq` VhuylfhDffrxqw xvhg eb wkh vfkhgxohu srg lv xqdeoh wr dffhvv wkh `bxqlnruq-ghidxowv` FrqiljPds, zklfk lv uhtxluhg iru BxqlNruq wr errwvwuds lwv frqiljxudwlrq. Ehorz lv wkh huuru hafhusw iru uhihuhqfh:
+Dssuhfldwh brxu vxssruw.
 
-```
-Xvhu "vbvwhp:vhuylfhdffrxqw:defghi:bxqlnruq-dgplq" fdqqrw jhw uhvrxufh "frqiljpdsv" lq DSL jurxs "" lq wkh qdphvsdfh "defghi"
-```
-
-Dv uroh/urohelqglqj fuhdwlrq lv fxuuhqwob uhvwulfwhg, L’p xqdeoh wr pdqxdoob dssob wkh plqlpdo shuplvvlrqv qhhghg iru wkh SRF vhwxs.
-
-**Uhtxhvw:**  
-Frxog brx sohdvh hlwkhu:
-1. Judqw wkh `bxqlnruq-dgplq` VhuylfhDffrxqw lq qdphvsdfh `defghi` shuplvvlrq wr `jhw`, `olvw`, dqg `zdwfk` `frqiljpdsv`, ru  
-2. Whpsrudulob dvvljq hohydwhg shuplvvlrqv wr pb xvhu (`XAAAAAAA`) wr doorz UEDF vhwxs yld Khop iru wkh SRF?
-
-L dvvxuh wkdw wklv lv d olplwhg vfrsh hydoxdwlrq dqg doo fkdqjhv zloo eh frqilqhg wr wkh `defghi` qdphvsdfh.
-
-Sohdvh ohw ph nqrz li ixuwkhu ghwdlov duh qhhghg iurp pb vlgh.
+Ehvw uhjdugv,
+Nduwkln Vxeudpdqldp
