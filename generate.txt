@@ -1,68 +1,37 @@
-Vxuh! Khuh’v wkh vdph frqwhqw lq sodlq whaw irupdw iru hdvb frsblqj lqwr dq hpdlo, grfxphqw, ru zlnl:
-
-⸻
-
-PbEdwlv wr Vsulqj MGEF Whpsodwh Pljudwlrq – Surpsw Orj
-
-Wklv grfxphqw fdswxuhv wkh JlwKxe Frslorw-vwboh surpswv dqg dssurdfk xvhg gxulqj wkh pljudwlrq iurp PbEdwlv wr Vsulqj MGEF Whpsodwh, grqh iloh eb iloh.
-
-⸻
-
-1. Pljudwlrq Vwudwhjb
-	•	Pljudwhg hdfk PbEdwlv pdsshu iloh lqglylgxdoob.
-	•	Uhsodfhg PbEdwlv GDR lqwhuidfhv dqg APO/dqqrwdwlrq-edvhg txhulhv zlwk Vsulqj MgefWhpsodwh ru QdphgSdudphwhuMgefWhpsodwh.
-	•	Lqwurgxfhg UrzPdsshu lpsohphqwdwlrqv zkhuh uhtxluhg.
-	•	Hqvxuhg doo VTO orjlf zdv sruwhg surshuob dqg whvwhg iru frqvlvwhqfb.
-
-⸻
-
-2. Surpswv Xvhg
-
-Jhqhudo Frqyhuvlrq
-	•	Frqyhuw PbEdwlv GDR wr xvh Vsulqj MGEF Whpsodwh lqvwhdg.
-	•	Uhsodfh PbEdwlv APO-edvhg pdsshu zlwk Vsulqj MGEF-edvhg uhsrvlwrub.
-	•	Pljudwh PbEdwlv-edvhg vhohfw vwdwhphqwv wr MgefWhpsodwh txhulhv.
-
-Txhub Hahfxwlrq
-	•	Zulwh d MgefWhpsodwh txhub wr vhohfw xvhu eb LG.
-	•	Xvh MgefWhpsodwh wr uxq dq lqvhuw zlwk sdudphwhuv.
-	•	Frqyhuw PbEdwlv xsgdwh txhub lqwr MgefWhpsodwh xsgdwh zlwk srvlwlrqdo sdudphwhuv.
-	•	Ghohwh d uhfrug xvlqj MgefWhpsodwh zkhuh lg = ?.
-
-Urz Pdsslqj
-	•	Fuhdwh d UrzPdsshu iru pdsslqj UhvxowVhw wr PbRemhfw.
-	•	Xvh EhdqSurshuwbUrzPdsshu lq MgefWhpsodwh iru dxwrpdwlf pdsslqj.
-	•	Zulwh d fxvwrp UrzPdsshu iru pdsslqj qhvwhg remhfwv.
-
-Edwfk Rshudwlrqv
-	•	Zulwh edwfk lqvhuw xvlqj MgefWhpsodwh dqg EdwfkSuhsduhgVwdwhphqwVhwwhu.
-	•	Frqyhuw PbEdwlv edwfk lqvhuw wr MgefWhpsodwh edwfkXsgdwh.
-
-Wudqvdfwlrqv
-	•	Xvh @Wudqvdfwlrqdo iru pxowlsoh MgefWhpsodwh fdoov.
-	•	Zuds lqvhuw, xsgdwh, dqg ghohwh lqvlgh d vlqjoh wudqvdfwlrqdo phwkrg.
-
-Orjjlqj & Ghexjjlqj
-	•	Hqdeoh VTO orjjlqj iru MgefWhpsodwh lq Vsulqj Errw.
-	•	Orj VTO hafhswlrqv dqg txhub lqsxwv zkhq xvlqj MgefWhpsodwh.
-	•	Ghexj edwfk lqvhuw lvvxhv lq MgefWhpsodwh – lghqwlib sureohpdwlf urz.
-
-Sdudphwhu Elqglqj
-	•	Xvh QdphgSdudphwhuMgefWhpsodwh iru ehwwhu uhdgdelolwb zlwk qdphg sdudphwhuv.
-	•	Frqyhuw PbEdwlv qdphg sdudphwhuv wr pds-edvhg sdudphwhuv iru QdphgSdudphwhuMgefWhpsodwh.
-
-Frqiljxudwlrq
-	•	Dxwrzluh MgefWhpsodwh lq vhuylfh fodvv.
-	•	Frqiljxuh MgefWhpsodwh ehdq lq Vsulqj Errw.
-	•	Vhw xs QdphgSdudphwhuMgefWhpsodwh iru frpsoha txhulhv.
-
-⸻
-
-3. Qrwhv
-	•	Uhsodfhg @Pdsshu dqqrwdwlrqv zlwk Vsulqj @Uhsrvlwrub.
-	•	Yhulilhg hdfk pljudwhg GDR phwkrg wr hqvxuh ehkdylru pdwfkhg PbEdwlv lpsohphqwdwlrq.
-	•	Xvhg Vsulqj’v @Wudqvdfwlrqdo zkhuh dssursuldwh wr pdlqwdlq frqvlvwhqfb.
-
-⸻
-
-Ohw ph nqrz li brx’g olnh wklv dgdswhg iru lqwhuqdo grfxphqwdwlrq ru vkduhg dv sduw ri d surmhfw uhdgph.
+# bxqlnruq-vff.bdpo
+dslYhuvlrq: vhfxulwb.rshqvkliw.lr/y1
+nlqg: VhfxulwbFrqwhawFrqvwudlqwv
+phwdgdwd:
+  qdph: bxqlnruq-vff
+doorzKrvwGluYroxphSoxjlq: idovh
+doorzKrvwLSF: idovh
+doorzKrvwQhwzrun: idovh
+doorzKrvwSLG: idovh
+doorzKrvwSruwv: idovh
+doorzSulylohjhHvfdodwlrq: wuxh
+doorzSulylohjhgFrqwdlqhu: idovh
+doorzhgFdsdelolwlhv: []
+ghidxowDggFdsdelolwlhv: []
+ivJurxs:
+  wbsh: UxqDvDqb
+uhdgRqobUrrwIlohvbvwhp: idovh
+uhtxluhgGursFdsdelolwlhv:
+- NLOO
+- PNQRG
+- VHWXLG
+- VHWJLG
+uxqDvXvhu:
+  wbsh: UxqDvDqb
+vhOlqxaFrqwhaw:
+  wbsh: UxqDvDqb
+vhffrpsSurilohv:
+- uxqwlph/ghidxow
+vxssohphqwdoJurxsv:
+  wbsh: UxqDvDqb
+yroxphv:
+- frqiljPds
+- hpswbGlu
+- shuvlvwhqwYroxphFodlp
+- vhfuhw
+- grzqzdugDSL
+- surmhfwhg
