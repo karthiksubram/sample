@@ -1,0 +1,284 @@
+# Yunikorn POC with Web UI (Namespace-Scoped)
+
+For a complete POC including the Yunikorn web UI, I'll provide an updated set of configuration files. The web UI will help you visualize queues, applications, and scheduling decisions.
+
+## Updated Files for Web UI Integration
+
+### 1. Namespace (unchanged)
+```yaml
+# namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: yunikorn-poc
+```
+
+### 2. Enhanced RBAC Configuration
+```yaml
+# rbac.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: yunikorn-sa
+  namespace: yunikorn-poc
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: yunikorn-role
+  namespace: yunikorn-poc
+rules:
+- apiGroups: [""]
+  resources: ["pods", "configmaps", "services", "events", "nodes"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["scheduling.k8s.io"]
+  resources: ["priorityclasses"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: yunikorn-role-binding
+  namespace: yunikorn-poc
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: yunikorn-role
+subjects:
+- kind: ServiceAccount
+  name: yunikorn-sa
+  namespace: yunikorn-poc
+```
+
+### 3. Scheduler Deployment with Web UI
+```yaml
+# scheduler.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yunikorn-scheduler
+  namespace: yunikorn-poc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yunikorn-scheduler
+  template:
+    metadata:
+      labels:
+        app: yunikorn-scheduler
+    spec:
+      serviceAccountName: yunikorn-sa
+      containers:
+      - name: yunikorn-scheduler-k8s
+        image: apache/yunikorn:scheduler-latest
+        imagePullPolicy: IfNotPresent
+        args:
+          - --name=yunikorn
+          - --policyGroup=queues
+          - --logEncoding=console
+          - --logLevel=0
+        env:
+        - name: YUNIKORN_CONFIG
+          value: /etc/yunikorn/queues.yaml
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/yunikorn
+        resources:
+          limits:
+            cpu: "1"
+            memory: "1Gi"
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+      - name: yunikorn-web
+        image: apache/yunikorn:web-latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 9889
+          name: web
+        env:
+        - name: LOG_ENCODING
+          value: console
+        - name: LOG_LEVEL
+          value: "0"
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+      volumes:
+      - name: config-volume
+        configMap:
+          name: yunikorn-config
+```
+
+### 4. Service Configuration (updated for Web UI)
+```yaml
+# service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: yunikorn-service
+  namespace: yunikorn-poc
+  labels:
+    app: yunikorn
+spec:
+  type: ClusterIP
+  selector:
+    app: yunikorn-scheduler
+  ports:
+    - name: web
+      port: 9889
+      targetPort: 9889
+      protocol: TCP
+    - name: scheduler
+      port: 9080
+      targetPort: 9080
+      protocol: TCP
+```
+
+### 5. Queue Configuration (unchanged)
+```yaml
+# configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: yunikorn-config
+  namespace: yunikorn-poc
+data:
+  queues.yaml: |
+    partitions:
+      - name: default
+        queues:
+          - name: root
+            queues:
+              - name: poc
+                resources:
+                  guaranteed:
+                    memory: 1000
+                    vcore: 10
+                  max:
+                    memory: 2000
+                    vcore: 20
+```
+
+### 6. Ingress for Web UI (optional)
+```yaml
+# ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: yunikorn-web-ingress
+  namespace: yunikorn-poc
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /yunikorn
+        pathType: Prefix
+        backend:
+          service:
+            name: yunikorn-service
+            port:
+              number: 9889
+```
+
+### 7. Test Application (unchanged)
+```yaml
+# test-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: yunikorn-test-pod
+  namespace: yunikorn-poc
+  labels:
+    app: yunikorn-test
+  annotations:
+    yunikorn.apache.org/scheduler: yunikorn
+    yunikorn.apache.org/queue: root.poc
+spec:
+  containers:
+  - name: busybox
+    image: busybox
+    command: ["sh", "-c", "sleep 3600"]
+    resources:
+      requests:
+        memory: "100Mi"
+        cpu: "100m"
+      limits:
+        memory: "200Mi"
+        cpu: "200m"
+```
+
+## Deployment Steps
+
+1. Create namespace:
+   ```bash
+   kubectl apply -f namespace.yaml
+   ```
+
+2. Set context to your namespace:
+   ```bash
+   kubectl config set-context --current --namespace=yunikorn-poc
+   ```
+
+3. Apply RBAC:
+   ```bash
+   kubectl apply -f rbac.yaml
+   ```
+
+4. Create configmap:
+   ```bash
+   kubectl apply -f configmap.yaml
+   ```
+
+5. Deploy scheduler with web UI:
+   ```bash
+   kubectl apply -f scheduler.yaml
+   ```
+
+6. Create service:
+   ```bash
+   kubectl apply -f service.yaml
+   ```
+
+7. (Optional) Create ingress if you want external access:
+   ```bash
+   kubectl apply -f ingress.yaml
+   ```
+
+8. Test with sample pod:
+   ```bash
+   kubectl apply -f test-pod.yaml
+   ```
+
+## Accessing the Web UI
+
+You have several options to access the web UI:
+
+1. **Port-forward (recommended for testing)**:
+   ```bash
+   kubectl port-forward svc/yunikorn-service 9889:9889 -n yunikorn-poc
+   ```
+   Then access: http://localhost:9889
+
+2. **Via Ingress (if configured)**:
+   Access the path you defined in the ingress (e.g., http://<your-cluster-address>/yunikorn)
+
+3. **NodePort alternative**:
+   If you don't have ingress controller, modify the service to type: NodePort and use the assigned port.
+
+## Web UI Features
+
+Once accessed, you can:
+- View cluster and queue utilization
+- See running applications
+- Monitor scheduling decisions
+- Examine queue hierarchies and configurations
+
+Would you like me to adjust any of these configurations or add specific features to the web UI setup?
