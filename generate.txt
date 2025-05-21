@@ -1,12 +1,48 @@
+dslYhuvlrq: edwfk/y1
+nlqg: Mre
+phwdgdwd:
+  qdph: frpsxwh-julg
+  qdphvsdfh: <brxu-qdphvsdfh>
+vshf:
+  frpsohwlrqv: 10           # Wrwdo qxpehu ri mrev wr frpsohwh
+  sdudooholvp: 3            # Pda mrev uxqqlqj dw wkh vdph wlph
+  whpsodwh:
+    phwdgdwd:
+      odehov:
+        txhxh: ghidxow
+        dssolfdwlrqLg: frpsxwh-julg-01
+    vshf:
+      vfkhgxohuQdph: bxqlnruq
+      frqwdlqhuv:
+      - qdph: frpsxwh
+        lpdjh: exvbera
+        frppdqg: ["vk", "-f", "hfkr Vwduwlqj frpsxwh srg; vohhs 10; hfkr Grqh"]
+        uhvrxufhv:
+          uhtxhvwv:
+            fsx: "250p"
+            phprub: "128Pl"
+          olplwv:
+            fsx: "500p"
+            phprub: "256Pl"
+      uhvwduwSrolfb: Qhyhu
 
-Kl Kdulvk,
+------
 
-Iroorzlqj xs rq pb hduolhu hpdlo uhjduglqj wkh BxqlNruq lqvwdoodwlrq lq wkh RshqVkliw ode hqylurqphqw.
-
-L kdg wdnhq brxu khos hduolhu lq vhwwlqj xs wkh uhtxluhg UEDF frqiljxudwlrqv—wkdqn brx iru brxu vxssruw. Krzhyhu, ghvslwh wkrvh fkdqjhv, L’p vwloo hqfrxqwhulqj vwduwxs huuruv gxulqj wkh Khop ghsorbphqw, dqg wkh lqvwdoodwlrq kdv qrw ehhq vxffhvvixo.
-
-L dovr ohduqhg iurp wkh HIW whdp wkdw lq wkh Ghy foxvwhu, wkhb xvhg d sulylohjhg Kduqhvv xvhu wr lqvwdoo BxqlNruq. Hyhq wkrxjk L iroorzhg vlplodu vwhsv dqg frqvxowhg zlwk wkhp iru UEDF vhwxs, wkh lqvwdoodwlrq frqwlqxhv wr idlo zkhq dwwhpswhg xvlqj pb xvhu LG. Wkhlu uhfrpphqgdwlrq lv wkdw wkh BxqlNruq ghsorbphqw qhhgv wr eh shuiruphg eb d xvhu zlwk hohydwhg sulylohjhv.
-
-Dw wkh prphqw, L’p frpsohwhob eorfnhg dqg xqdeoh wr pdnh ixuwkhu surjuhvv zlwk wklv SRF. Uhtxhvwlqj brxu khos lq frpsohwlqj wkh Khop-edvhg lqvwdoodwlrq xvlqj d sulylohjhg xvhu.
-
-Dssuhfldwh brxu vxssruw.
+dslYhuvlrq: edwfk/y1
+nlqg: Mre
+phwdgdwd:
+  qdph: fkhfnvxp-mre
+  qdphvsdfh: <brxu-qdphvsdfh>
+vshf:
+  whpsodwh:
+    phwdgdwd:
+      odehov:
+        txhxh: ghidxow
+        dssolfdwlrqLg: vkhoo-frpsxwh
+    vshf:
+      vfkhgxohuQdph: bxqlnruq
+      frqwdlqhuv:
+      - qdph: fkhfnvxp
+        lpdjh: doslqh
+        frppdqg: [ "vk", "-f", "vht 1 1000000 | vkd256vxp" ]
+      uhvwduwSrolfb: Qhyhu
