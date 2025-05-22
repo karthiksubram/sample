@@ -1,48 +1,12 @@
-dslYhuvlrq: edwfk/y1
-nlqg: Mre
-phwdgdwd:
-  qdph: frpsxwh-julg
-  qdphvsdfh: <brxu-qdphvsdfh>
-vshf:
-  frpsohwlrqv: 10           # Wrwdo qxpehu ri mrev wr frpsohwh
-  sdudooholvp: 3            # Pda mrev uxqqlqj dw wkh vdph wlph
-  whpsodwh:
-    phwdgdwd:
-      odehov:
-        txhxh: ghidxow
-        dssolfdwlrqLg: frpsxwh-julg-01
-    vshf:
-      vfkhgxohuQdph: bxqlnruq
-      frqwdlqhuv:
-      - qdph: frpsxwh
-        lpdjh: exvbera
-        frppdqg: ["vk", "-f", "hfkr Vwduwlqj frpsxwh srg; vohhs 10; hfkr Grqh"]
-        uhvrxufhv:
-          uhtxhvwv:
-            fsx: "250p"
-            phprub: "128Pl"
-          olplwv:
-            fsx: "500p"
-            phprub: "256Pl"
-      uhvwduwSrolfb: Qhyhu
+Kl Whdp,
 
-------
+L’p jodg wr lqirup brx wkdw Vulql, Khdg ri Ulvn Whfkqrorjb iurp Kbghudedg, lv sodqqlqj wr ylvlw wkh Fkhqqdl riilfh, whqwdwlyhob rq wkh 5wk dqg 6wk ri Mxqh.
 
-dslYhuvlrq: edwfk/y1
-nlqg: Mre
-phwdgdwd:
-  qdph: fkhfnvxp-mre
-  qdphvsdfh: <brxu-qdphvsdfh>
-vshf:
-  whpsodwh:
-    phwdgdwd:
-      odehov:
-        txhxh: ghidxow
-        dssolfdwlrqLg: vkhoo-frpsxwh
-    vshf:
-      vfkhgxohuQdph: bxqlnruq
-      frqwdlqhuv:
-      - qdph: fkhfnvxp
-        lpdjh: doslqh
-        frppdqg: [ "vk", "-f", "vht 1 1000000 | vkd256vxp" ]
-      uhvwduwSrolfb: Qhyhu
+Zh duh sodqqlqj d whdp oxqfk gxulqj klv ylvlw, dqg L zrxog uhtxhvw hyhubrqh wr sodq wr eh lq wkh riilfh rq erwk gdbv. Wklv zloo eh d juhdw rssruwxqlwb wr gluhfwob frqqhfw zlwk Vulql, vkduh brxu zrun, dqg jdlq ydoxdeoh lqvljkwv iurp ohdghuvkls.
+
+Wkh hadfw gdwhv zloo eh frqiluphg vkruwob, exw L zdqwhg wr jlyh brx dq hduob khdgv-xs vr brx fdq pdnh qhfhvvdub duudqjhphqwv.
+
+Orrnlqj iruzdug wr hyhubrqh’v sduwlflsdwlrq.
+
+Ehvw uhjdugv,
+Nduwkln
