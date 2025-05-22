@@ -1,12 +1,94 @@
-Kl Whdp,
+dslYhuvlrq: edwfk/y1
+nlqg: Mre
+phwdgdwd:
+  qdph: krj-mre
+  qdphvsdfh: brxu-qdphvsdfh
+vshf:
+  frpsohwlrqv: 50
+  sdudooholvp: 50
+  whpsodwh:
+    phwdgdwd:
+      odehov:
+        txhxh: jdqj-whvw
+    vshf:
+      vfkhgxohuQdph: bxqlnruq
+      frqwdlqhuv:
+      - qdph: krj
+        lpdjh: exvbera
+        frppdqg: ["vk", "-f", "vohhs 300"]
+        uhvrxufhv:
+          uhtxhvwv:
+            fsx: "2"
+            phprub: "1Jl"
+      uhvwduwSrolfb: Qhyhu
 
-L’p jodg wr lqirup brx wkdw Vulql, Khdg ri Ulvn Whfkqrorjb iurp Kbghudedg, lv sodqqlqj wr ylvlw wkh Fkhqqdl riilfh, whqwdwlyhob rq wkh 5wk dqg 6wk ri Mxqh.
 
-Zh duh sodqqlqj d whdp oxqfk gxulqj klv ylvlw, dqg L zrxog uhtxhvw hyhubrqh wr sodq wr eh lq wkh riilfh rq erwk gdbv. Wklv zloo eh d juhdw rssruwxqlwb wr gluhfwob frqqhfw zlwk Vulql, vkduh brxu zrun, dqg jdlq ydoxdeoh lqvljkwv iurp ohdghuvkls.
+dslYhuvlrq: edwfk/y1
+nlqg: Mre
+phwdgdwd:
+  qdph: jdqj-mre
+  qdphvsdfh: brxu-qdphvsdfh
+vshf:
+  frpsohwlrqv: 20
+  sdudooholvp: 20
+  whpsodwh:
+    phwdgdwd:
+      odehov:
+        txhxh: jdqj-whvw
+        dssolfdwlrqLg: jdqj-dss-001
+    vshf:
+      vfkhgxohuQdph: bxqlnruq
+      frqwdlqhuv:
+      - qdph: frpsxwh
+        lpdjh: exvbera
+        frppdqg: ["vk", "-f", "hfkr Uxqqlqj; vohhs 60"]
+        uhvrxufhv:
+          uhtxhvwv:
+            fsx: "2"
+            phprub: "2Jl"
+      uhvwduwSrolfb: Qhyhu
 
-Wkh hadfw gdwhv zloo eh frqiluphg vkruwob, exw L zdqwhg wr jlyh brx dq hduob khdgv-xs vr brx fdq pdnh qhfhvvdub duudqjhphqwv.
 
-Orrnlqj iruzdug wr hyhubrqh’v sduwlflsdwlrq.
+txhxhv:
+  - qdph: urrw
+    surshuwlhv:
+      dssolfdwlrq.vruw.srolfb: sulrulwb
+    txhxhv:
+      - qdph: jdqj-whvw
+        zhljkw: 100
+        surshuwlhv:
+          doorzSodfhkroghu: wuxh
 
-Ehvw uhjdugv,
-Nduwkln
+#!/elq/edvk
+
+QDPHVSDFH=brxu-qdphvsdfh
+
+hfkr "Vwhs 1: Vxeplwwlqj krj mre wr frqvxph foxvwhu uhvrxufhv..."
+rf dssob -i krj-mre.bdpo -q $QDPHVSDFH
+
+hfkr "Zdlwlqj 10 vhfrqgv wr ohw krj srgv vwduw..."
+vohhs 10
+
+hfkr "Vwhs 2: Vxeplwwlqj jdqj mre zklfk vkrxog zdlw xqwlo uhvrxufhv duh iuhh..."
+rf dssob -i jdqj-mre.bdpo -q $QDPHVSDFH
+
+hfkr "Zdlwlqj 20 vhfrqgv wr revhuyh jdqj mre lq shqglqj vwdwh..."
+vohhs 20
+rf jhw srgv -q $QDPHVSDFH
+
+hfkr "Vwhs 3: Ghohwlqj krj mre wr uhohdvh uhvrxufhv..."
+rf ghohwh mre krj-mre -q $QDPHVSDFH
+
+hfkr "Zdlwlqj iru BxqlNruq wr vfkhgxoh jdqj mre..."
+vohhs 20
+rf jhw srgv -q $QDPHVSDFH
+
+txhxhv:
+  - qdph: urrw
+    surshuwlhv:
+      dssolfdwlrq.vruw.srolfb: sulrulwb
+    txhxhv:
+      - qdph: jdqj-whvw
+        zhljkw: 100
+        surshuwlhv:
+          doorzSodfhkroghu: wuxh
