@@ -1,0 +1,30 @@
+executor: KubernetesExecutor
+
+# Ensure image for KubernetesExecutor pods
+airflow:
+  config:
+    AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY: apache/airflow
+    AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG: 2.8.1-python3.9
+
+postgresql:
+  enabled: true
+  auth:
+    username: airflow
+    password: airflow
+    database: airflow
+  primary:
+    persistence:
+      enabled: false
+
+web:
+  defaultUser:
+    enabled: true
+    username: admin
+    password: admin
+
+rbac:
+  create: true
+
+serviceAccount:
+  create: true
+  name: airflow-sa
