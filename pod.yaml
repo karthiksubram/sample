@@ -1,0 +1,14 @@
+# test-image.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-airflow-image
+  namespace: default
+spec:
+  containers:
+    - name: test
+      image: myregistry.myorg.com/airflow/airflow:2.10.4-2
+      command: ["sleep", "300"]
+  imagePullSecrets:
+    - name: my-registry-secret
+  restartPolicy: Never
