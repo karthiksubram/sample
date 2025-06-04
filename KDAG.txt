@@ -1,0 +1,28 @@
+from airflow import DAG
+from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
+from datetime import datetime
+
+default_args = {
+    'owner': 'airflow',
+    'start_date': datetime(2024, 1, 1),
+}
+
+with DAG(
+    dag_id='k8s_pod_operator_ocp',
+    default_args=default_args,
+    description='Run a Kubernetes Pod in OpenShift using Airflow',
+    schedule_interval=None,
+    catchup=False,
+    tags=['ocp', 'kubernetes'],
+) as dag:
+
+    run_in_pod = KubernetesPodOperator(
+        task_id="hello_from_pod",
+        name="hello-pod",
+        namespace="your-airflow-namespace",  # update this
+        image="busybox",  # lightweight image
+        cmds=["sh", "-c"],
+        arguments=["echo Hello from KubernetesPodOperator in OCP!"],
+        get_logs=True,
+        is_delete_operator_pod=True,
+    )
