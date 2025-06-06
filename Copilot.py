@@ -15,11 +15,21 @@ default_args = {
     'retries': 1,
 }
 
+# Define KubernetesExecutor resource requirements
+executor_config = {
+    "KubernetesExecutor": {
+        "request_memory": "128Mi",
+        "request_cpu": "100m",
+        "limit_memory": "256Mi",
+        "limit_cpu": "200m",
+    }
+}
+
 # Define the DAG
 with DAG(
-    dag_id='airflow_example_dag',  # Use this dag_id in UI to trigger
+    dag_id='abcd_dag',  # Your new dag_id
     default_args=default_args,
-    description='A simple example DAG',
+    description='A simple example DAG with KubernetesExecutor resource config',
     schedule_interval=None,  # Manual triggering
     start_date=datetime(2023, 1, 1),
     catchup=False,
@@ -30,12 +40,14 @@ with DAG(
         task_id='start_task',
         python_callable=print_message,
         op_kwargs={'message': 'This is the start task!'},
+        executor_config=executor_config,
     )
 
     end = PythonOperator(
         task_id='end_task',
         python_callable=print_message,
         op_kwargs={'message': 'This is the end task!'},
+        executor_config=executor_config,
     )
 
     start >> end
