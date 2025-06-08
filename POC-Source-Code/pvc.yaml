@@ -1,0 +1,15 @@
+# pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: airflow-scripts-pvc
+  namespace: airflow # IMPORTANT: Use the namespace where your Airflow pods are running
+spec:
+  accessModes:
+    - ReadWriteOnce # This is common. If your StorageClass supports ReadWriteMany and you need it, use that.
+  resources:
+    requests:
+      storage: 1Gi # 1 Gigabyte, usually more than enough for scripts
+  # If your OpenShift cluster has a specific default StorageClass, you might not need this.
+  # Otherwise, uncomment and specify your StorageClass name, e.g., "gp2", "nfs-client", etc.
+  # storageClassName: "your-storage-class-name"
