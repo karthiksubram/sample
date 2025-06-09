@@ -1,90 +1,77 @@
-# gang_scheduling_dag.py (Revised - using full_pod_spec)
+# gang_scheduling_dag.py (Direct Worker Creation - Complete File)
 from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
 from airflow.utils.dates import days_ago
 import pendulum
 from kubernetes.client import models as k8s # Import Kubernetes models
 
-# Define a unique group name for your gang
-GANG_GROUP_NAME = "my-simulated-distributed-job-workers"
-GANG_MIN_WORKERS = 3
+# --- Gang Scheduling Parameters ---
+GANG_GROUP_NAME = "my-direct-worker-gang" # Unique name for this gang
+GANG_MIN_WORKERS = 3 # The total number of worker pods that must start atomically
+YUNIKORN_QUEUE_WORKERS = "root.gang_jobs" # Yunikorn queue for these workers
 
-# Define your volume and volume mount configuration for the coordinator pod
-volume_name = "scripts-pvc-volume"
-volume_mount_path = "/opt/mounted_scripts"
-
-volume = k8s.V1Volume(
-    name=volume_name,
-    persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(claim_name="airflow-scripts-pvc")
-)
-
-volume_mount = k8s.V1VolumeMount(
-    name=volume_name,
-    mount_path=volume_mount_path,
-    read_only=True
-)
-
-# --- Define the full pod spec for the Coordinator Pod ---
-coordinator_pod_spec = k8s.V1Pod(
-    api_version="v1",
-    kind="Pod",
-    metadata=k8s.V1ObjectMeta(
-        # Name will be overridden by Airflow
-        labels={
-            "yunikorn.apache.org/queue": "root.launch_pods",
-            "app": "gang-coordinator"
-        }
-    ),
-    spec=k8s.V1PodSpec(
-        # THIS IS WHERE schedulerName IS SET NOW
-        scheduler_name='yunikorn',
-        restart_policy='Never', # Or 'OnFailure', depending on desired retry behavior
-        containers=[
-            k8s.V1Container(
-                name="base", # Name is typically "base" for KPO, but can be anything
-                image='python:3.9-slim-buster',
-                command=["python"],
-                args=[f"{volume_mount_path}/coordinator_script.py"],
-                resources=k8s.V1ResourceRequirements(
-                    requests={"cpu": "50m", "memory": "64Mi"},
-                    limits={"cpu": "100m", "memory": "128Mi"},
-                ),
-                env=[
-                    k8s.V1EnvVar(name="POD_NAMESPACE", value="airflow"),
-                    k8s.V1EnvVar(name="GANG_GROUP_NAME", value=GANG_GROUP_NAME),
-                    k8s.V1EnvVar(name="GANG_MIN_WORKERS", value=str(GANG_MIN_WORKERS)),
-                    k8s.V1EnvVar(name="YUNIKORN_QUEUE_WORKERS", value="root.gang_jobs"),
-                ],
-                volume_mounts=[volume_mount], # Mount the volume here
-            )
-        ],
-        volumes=[volume], # Define the volume at the pod level
+# --- Define the base pod spec for a worker ---
+# This will be copied and customized for each worker
+def create_worker_base_pod_spec(worker_id: int):
+    return k8s.V1Pod(
+        api_version="v1",
+        kind="Pod",
+        metadata=k8s.V1ObjectMeta(
+            # Name will be overridden by Airflow's task_id, but define a base for clarity
+            labels={
+                "app": "gang-worker",
+                "gang-member-id": str(worker_id),
+                # Yunikorn Gang Scheduling Labels (same for all workers in the gang)
+                "yunikorn.apache.org/queue": YUNIKORN_QUEUE_WORKERS,
+                "scheduling.k8s.io/group-name": GANG_GROUP_NAME,
+                "scheduling.k8s.io/group-min-members": str(GANG_MIN_WORKERS),
+            }
+        ),
+        spec=k8s.V1PodSpec(
+            scheduler_name='yunikorn', # Ensure Yunikorn is the scheduler
+            restart_policy="Never", # Or 'OnFailure' if you want K8s to retry
+            containers=[
+                k8s.V1Container(
+                    name=f"worker-container-{worker_id}", # Unique name for clarity
+                    image="busybox", # Using busybox for simple worker tasks
+                    command=["sh", "-c", f"echo 'Worker {worker_id} starting'; sleep 30; echo 'Worker {worker_id} finished'"],
+                    resources=k8s.V1ResourceRequirements(
+                        requests={"cpu": "100m", "memory": "128Mi"},
+                        limits={"cpu": "200m", "memory": "256Mi"},
+                    ),
+                )
+            ]
+        )
     )
-)
-# --- End of full pod spec definition ---
-
 
 with DAG(
-    dag_id='yunikorn_gang_scheduling_poc_mounted_script_full_spec', # Changed DAG ID
+    dag_id='yunikorn_gang_scheduling_direct_workers', # New DAG ID
     start_date=pendulum.datetime(2025, 1, 1, tz="UTC"),
     schedule=None,
     catchup=False,
-    tags=['yunikorn', 'kubernetes', 'poc', 'gang_scheduling', 'full_spec'],
+    tags=['yunikorn', 'kubernetes', 'direct_workers', 'gang_scheduling'],
 ) as dag:
     
-    launch_gang_coordinator = KubernetesPodOperator(
-        task_id='launch_gang_coordinator',
-        namespace='airflow',  # The namespace where the pod will be created
+    worker_tasks = []
+    # Create GANG_MIN_WORKERS KubernetesPodOperator tasks
+    for i in range(1, GANG_MIN_WORKERS + 1):
+        worker_pod_spec = create_worker_base_pod_spec(i)
         
-        # --- Use full_pod_spec instead of individual arguments ---
-        full_pod_spec=coordinator_pod_spec,
-        # --------------------------------------------------------
+        # Override the pod's name for unique task_id and clarity in K8s
+        # Airflow usually assigns a unique name, but you can influence it
+        # This is optional, but helps with clarity in K8s UI/logs
+        worker_pod_spec.metadata.name = f"gang-worker-{i}-{{{{ ts_nodash }}}}" 
         
-        # Other KPO arguments that are still valid (e.g., name, image) can be omitted
-        # if they are defined in full_pod_spec.
-        # However, some KPO arguments like 'namespace' are often used for convenience
-        # and override what's in full_pod_spec if they conflict.
-        # It's generally best to define it directly in full_pod_spec for consistency.
-        
-        do_xcom_push=False,
-    )
+        worker_task = KubernetesPodOperator(
+            task_id=f'gang_worker_{i}', # Unique task ID for each worker
+            namespace='airflow', # Or your target namespace
+            full_pod_spec=worker_pod_spec,
+            do_xcom_push=False,
+        )
+        worker_tasks.append(worker_task)
+
+    # In this direct approach, all worker tasks are launched concurrently by Airflow.
+    # Yunikorn's gang scheduling logic will ensure they don't *start running*
+    # until GANG_MIN_WORKERS pods are ready for placement.
+    # No explicit dependencies are needed here for them to run in parallel.
+
