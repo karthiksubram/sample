@@ -1,4 +1,4 @@
-# coordinator_script.py (Revised)
+# coordinator_script.py (Remains the same as the "Revised" version in previous answer)
 import os
 import kubernetes
 import time
@@ -7,7 +7,6 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Kubernetes configuration
 try:
     kubernetes.config.load_incluster_config()
 except kubernetes.config.config_exception.ConfigException:
@@ -16,14 +15,13 @@ except kubernetes.config.config_exception.ConfigException:
 v1 = kubernetes.client.CoreV1Api()
 
 NAMESPACE = os.getenv("POD_NAMESPACE", "airflow")
-GANG_GROUP_NAME = os.getenv("GANG_GROUP_NAME", "default-gang-workers") # Updated default
-GANG_MIN_WORKERS = int(os.getenv("GANG_MIN_WORKERS", "1")) # Renamed env var
-YUNIKORN_QUEUE_WORKERS = os.getenv("YUNIKORN_QUEUE_WORKERS", "root.gang_jobs") # Queue for workers
+GANG_GROUP_NAME = os.getenv("GANG_GROUP_NAME", "default-gang-workers")
+GANG_MIN_WORKERS = int(os.getenv("GANG_MIN_WORKERS", "1"))
+YUNIKORN_QUEUE_WORKERS = os.getenv("YUNIKORN_QUEUE_WORKERS", "root.gang_jobs")
 
 logger.info(f"Coordinator script started. Namespace: {NAMESPACE}, Gang Group: {GANG_GROUP_NAME}, Min Workers: {GANG_MIN_WORKERS}, Yunikorn Queue (Workers): {YUNIKORN_QUEUE_WORKERS}")
 
 def create_worker_pod_spec(worker_id: int):
-    """Creates a Kubernetes Pod spec for a worker."""
     return kubernetes.client.V1Pod(
         api_version="v1",
         kind="Pod",
@@ -32,14 +30,13 @@ def create_worker_pod_spec(worker_id: int):
             labels={
                 "app": "gang-worker",
                 "gang-member-id": str(worker_id),
-                # Yunikorn Gang Scheduling Annotations for WORKER PODS
                 "yunikorn.apache.org/queue": YUNIKORN_QUEUE_WORKERS,
                 "scheduling.k8s.io/group-name": GANG_GROUP_NAME,
-                "scheduling.k8s.io/group-min-members": str(GANG_MIN_WORKERS), # MINIMUM WORKERS
+                "scheduling.k8s.io/group-min-members": str(GANG_MIN_WORKERS),
             }
         ),
         spec=kubernetes.client.V1PodSpec(
-            scheduler_name='yunikorn', # IMPORTANT: Still schedule workers via Yunikorn
+            scheduler_name='yunikorn', # This is correctly placed here
             restart_policy="Never",
             containers=[
                 kubernetes.client.V1Container(
@@ -56,9 +53,7 @@ def create_worker_pod_spec(worker_id: int):
     )
 
 worker_pods = []
-# Create exactly GANG_MIN_WORKERS for the gang demo
-# If you want to create more than min workers, you'd adjust this loop
-for i in range(1, GANG_MIN_WORKERS + 1): # Loop from 1 to GANG_MIN_WORKERS (inclusive)
+for i in range(1, GANG_MIN_WORKERS + 1):
     worker_pod_spec = create_worker_pod_spec(i)
     try:
         logger.info(f"Creating worker pod: {worker_pod_spec.metadata.name}")
