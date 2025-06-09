@@ -1,89 +1,90 @@
-# coordinator_script.py (Remains the same as the "Revised" version in previous answer)
-import os
-import kubernetes
-import time
-import logging
+# gang_scheduling_dag.py (Revised - using full_pod_spec)
+from airflow import DAG
+from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
+from airflow.utils.dates import days_ago
+import pendulum
+from kubernetes.client import models as k8s # Import Kubernetes models
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+# Define a unique group name for your gang
+GANG_GROUP_NAME = "my-simulated-distributed-job-workers"
+GANG_MIN_WORKERS = 3
 
-try:
-    kubernetes.config.load_incluster_config()
-except kubernetes.config.config_exception.ConfigException:
-    kubernetes.config.load_kube_config()
+# Define your volume and volume mount configuration for the coordinator pod
+volume_name = "scripts-pvc-volume"
+volume_mount_path = "/opt/mounted_scripts"
 
-v1 = kubernetes.client.CoreV1Api()
+volume = k8s.V1Volume(
+    name=volume_name,
+    persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(claim_name="airflow-scripts-pvc")
+)
 
-NAMESPACE = os.getenv("POD_NAMESPACE", "airflow")
-GANG_GROUP_NAME = os.getenv("GANG_GROUP_NAME", "default-gang-workers")
-GANG_MIN_WORKERS = int(os.getenv("GANG_MIN_WORKERS", "1"))
-YUNIKORN_QUEUE_WORKERS = os.getenv("YUNIKORN_QUEUE_WORKERS", "root.gang_jobs")
+volume_mount = k8s.V1VolumeMount(
+    name=volume_name,
+    mount_path=volume_mount_path,
+    read_only=True
+)
 
-logger.info(f"Coordinator script started. Namespace: {NAMESPACE}, Gang Group: {GANG_GROUP_NAME}, Min Workers: {GANG_MIN_WORKERS}, Yunikorn Queue (Workers): {YUNIKORN_QUEUE_WORKERS}")
-
-def create_worker_pod_spec(worker_id: int):
-    return kubernetes.client.V1Pod(
-        api_version="v1",
-        kind="Pod",
-        metadata=kubernetes.client.V1ObjectMeta(
-            name=f"gang-worker-{worker_id}-{int(time.time())}",
-            labels={
-                "app": "gang-worker",
-                "gang-member-id": str(worker_id),
-                "yunikorn.apache.org/queue": YUNIKORN_QUEUE_WORKERS,
-                "scheduling.k8s.io/group-name": GANG_GROUP_NAME,
-                "scheduling.k8s.io/group-min-members": str(GANG_MIN_WORKERS),
-            }
-        ),
-        spec=kubernetes.client.V1PodSpec(
-            scheduler_name='yunikorn', # This is correctly placed here
-            restart_policy="Never",
-            containers=[
-                kubernetes.client.V1Container(
-                    name="worker-container",
-                    image="busybox",
-                    command=["sh", "-c", f"echo 'Worker {worker_id} starting'; sleep 30; echo 'Worker {worker_id} finished'"],
-                    resources=kubernetes.client.V1ResourceRequirements(
-                        requests={"cpu": "100m", "memory": "128Mi"},
-                        limits={"cpu": "200m", "memory": "256Mi"},
-                    ),
-                )
-            ]
-        )
+# --- Define the full pod spec for the Coordinator Pod ---
+coordinator_pod_spec = k8s.V1Pod(
+    api_version="v1",
+    kind="Pod",
+    metadata=k8s.V1ObjectMeta(
+        # Name will be overridden by Airflow
+        labels={
+            "yunikorn.apache.org/queue": "root.launch_pods",
+            "app": "gang-coordinator"
+        }
+    ),
+    spec=k8s.V1PodSpec(
+        # THIS IS WHERE schedulerName IS SET NOW
+        scheduler_name='yunikorn',
+        restart_policy='Never', # Or 'OnFailure', depending on desired retry behavior
+        containers=[
+            k8s.V1Container(
+                name="base", # Name is typically "base" for KPO, but can be anything
+                image='python:3.9-slim-buster',
+                command=["python"],
+                args=[f"{volume_mount_path}/coordinator_script.py"],
+                resources=k8s.V1ResourceRequirements(
+                    requests={"cpu": "50m", "memory": "64Mi"},
+                    limits={"cpu": "100m", "memory": "128Mi"},
+                ),
+                env=[
+                    k8s.V1EnvVar(name="POD_NAMESPACE", value="airflow"),
+                    k8s.V1EnvVar(name="GANG_GROUP_NAME", value=GANG_GROUP_NAME),
+                    k8s.V1EnvVar(name="GANG_MIN_WORKERS", value=str(GANG_MIN_WORKERS)),
+                    k8s.V1EnvVar(name="YUNIKORN_QUEUE_WORKERS", value="root.gang_jobs"),
+                ],
+                volume_mounts=[volume_mount], # Mount the volume here
+            )
+        ],
+        volumes=[volume], # Define the volume at the pod level
     )
+)
+# --- End of full pod spec definition ---
 
-worker_pods = []
-for i in range(1, GANG_MIN_WORKERS + 1):
-    worker_pod_spec = create_worker_pod_spec(i)
-    try:
-        logger.info(f"Creating worker pod: {worker_pod_spec.metadata.name}")
-        api_response = v1.create_namespaced_pod(body=worker_pod_spec, namespace=NAMESPACE)
-        worker_pods.append(api_response)
-        logger.info(f"Worker pod '{api_response.metadata.name}' created.")
-    except kubernetes.client.ApiException as e:
-        logger.error(f"Error creating worker pod {worker_pod_spec.metadata.name}: {e}")
-        raise
 
-logger.info(f"Waiting for {len(worker_pods)} worker pods to complete...")
-for pod in worker_pods:
-    name = pod.metadata.name
-    while True:
-        try:
-            pod_status = v1.read_namespaced_pod_status(name=name, namespace=NAMESPACE)
-            if pod_status.status.phase == "Succeeded":
-                logger.info(f"Pod '{name}' Succeeded.")
-                break
-            elif pod_status.status.phase == "Failed":
-                logger.error(f"Pod '{name}' Failed!")
-                raise Exception(f"Worker pod {name} failed.")
-            else:
-                logger.info(f"Pod '{name}' status: {pod_status.status.phase}. Waiting...")
-                time.sleep(5)
-        except kubernetes.client.ApiException as e:
-            if e.status == 404:
-                logger.warning(f"Pod '{name}' not found. It might have been deleted. Assuming failure.")
-                raise Exception(f"Worker pod {name} not found.")
-            else:
-                logger.error(f"Error checking status for pod '{name}': {e}")
-                raise
-logger.info("All worker pods completed successfully. Coordinator script finished.")
+with DAG(
+    dag_id='yunikorn_gang_scheduling_poc_mounted_script_full_spec', # Changed DAG ID
+    start_date=pendulum.datetime(2025, 1, 1, tz="UTC"),
+    schedule=None,
+    catchup=False,
+    tags=['yunikorn', 'kubernetes', 'poc', 'gang_scheduling', 'full_spec'],
+) as dag:
+    
+    launch_gang_coordinator = KubernetesPodOperator(
+        task_id='launch_gang_coordinator',
+        namespace='airflow',  # The namespace where the pod will be created
+        
+        # --- Use full_pod_spec instead of individual arguments ---
+        full_pod_spec=coordinator_pod_spec,
+        # --------------------------------------------------------
+        
+        # Other KPO arguments that are still valid (e.g., name, image) can be omitted
+        # if they are defined in full_pod_spec.
+        # However, some KPO arguments like 'namespace' are often used for convenience
+        # and override what's in full_pod_spec if they conflict.
+        # It's generally best to define it directly in full_pod_spec for consistency.
+        
+        do_xcom_push=False,
+    )
