@@ -1,0 +1,122 @@
+---
+# YuniKorn Queue Configuration (to be manually added to yunikorn-configs ConfigMap)
+# Navigate to your YuniKorn scheduler ConfigMap (e.g., 'yunikorn-configs' in 'yunikorn' namespace)
+# and update the 'queues.yaml' key within it.
+# Restart the YuniKorn scheduler pod after updating the ConfigMap.
+#
+# Example content for the 'queues.yaml' key in your ConfigMap:
+# partitions:
+#   - name: default
+#     queues:
+#       - name: root
+#         submitACL: "*"
+#         queues:
+#           - name: low-pri
+#             properties:
+#               application.sort.policy: fairness
+#             resources:
+#               guaranteed:
+#                 memory: 1000Mi # Lower guaranteed, will be oversubscribed
+#                 vcore: 1000m
+#               max:
+#                 memory: 5000Mi # Can burst, but won't be guaranteed
+#                 vcore: 5000m
+#           - name: high-pri
+#             properties:
+#               application.sort.policy: fairness
+#             resources:
+#               guaranteed:
+#                 memory: 2000Mi # Higher guaranteed, this queue will trigger preemption
+#                 vcore: 2000m
+#               max:
+#                 memory: 5000Mi
+#                 vcore: 5000m
+---
+# Kubernetes PriorityClass for Low Priority Pods
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: low-priority
+value: 1000 # Lower priority value
+globalDefault: false
+description: "This priority class is for low-priority pods that can be preempted."
+
+---
+# Kubernetes PriorityClass for High Priority Pods
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: high-priority
+value: 1000000 # Much higher priority value to trigger preemption
+globalDefault: false
+description: "This priority class is for high-priority pods that can preempt others."
+
+---
+# Deployment for Victim Applications (Lower Priority)
+# These pods will consume resources and be targets for preemption.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: victim-apps
+  labels:
+    app: victim-app
+spec:
+  replicas: 5 # Adjust based on your cluster size and queue capacities
+  selector:
+    matchLabels:
+      app: victim-app
+  template:
+    metadata:
+      labels:
+        app: victim-app
+      annotations:
+        yunikorn.apache.org/queue: root.low-pri # Assign to the low-priority YuniKorn queue
+    spec:
+      schedulerName: yunikorn # Ensure YuniKorn schedules these pods
+      priorityClassName: low-priority # Assign the low priority class
+      containers:
+      - name: busybox-victim
+        image: busybox
+        command: ["sh", "-c", "sleep 3600"] # Pods run for 1 hour
+        resources:
+          requests:
+            memory: 500Mi # Each victim pod requests 500 MiB memory
+            vcore: 500m   # Each victim pod requests 500 mCPU
+          limits:
+            memory: 500Mi
+            vcore: 500m
+
+---
+# Deployment for Preemptor Application (Higher Priority)
+# This pod will request resources and cause lower-priority pods to be preempted.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: preemptor-app
+  labels:
+    app: preemptor-app
+spec:
+  replicas: 1 # Start with 1, scale up if preemption isn't immediately triggered
+  selector:
+    matchLabels:
+      app: preemptor-app
+  template:
+    metadata:
+      labels:
+        app: preemptor-app
+      annotations:
+        yunikorn.apache.org/queue: root.high-pri # Assign to the high-priority YuniKorn queue
+    spec:
+      schedulerName: yunikorn # Ensure YuniKorn schedules these pods
+      priorityClassName: high-priority # Assign the high priority class
+      containers:
+      - name: busybox-preemptor
+        image: busybox
+        command: ["sh", "-c", "sleep 3600"] # Pod runs for 1 hour
+        resources:
+          requests:
+            memory: 1500Mi # Preemptor pod requests 1.5 GiB memory
+            vcore: 1500m   # Preemptor pod requests 1.5 CPU
+          limits:
+            memory: 1500Mi
+            vcore: 1500m
