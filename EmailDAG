@@ -1,0 +1,31 @@
+from __future__ import annotations
+
+import datetime
+
+from airflow.models.dag import DAG
+from airflow.operators.bash import BashOperator
+from airflow.utils.email import send_email
+
+def send_failure_notification(context):
+    subject = f"Airflow DAG Failure: {context['dag'].dag_id}"
+    html_content = f"""
+    <h3>DAG Failed!</h3>
+    <p>DAG: {context['dag'].dag_id}</p>
+    <p>Task: {context['task_instance'].task_id}</p>
+    <p>Run ID: {context['dag_run'].run_id}</p>
+    <p>Log URL: {context['ti'].log_url}</p>
+    """
+    send_email(to=["alert_recipient@example.com"], subject=subject, html_content=html_content)
+
+with DAG(
+    dag_id="failure_email_dag",
+    start_date=datetime.datetime(2023, 1, 1),
+    schedule=None,
+    catchup=False,
+    tags=["email", "failure"],
+    on_failure_callback=send_failure_notification, # Set callback for the entire DAG
+) as dag:
+    failing_task = BashOperator(
+        task_id="failing_task",
+        bash_command="exit 1", # This task will deliberately fail
+    )
