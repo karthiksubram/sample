@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gang-worker-1
+  labels:
+    queue: root.test
+    app: gang-worker
+    yunikorn.apache.org/schedulingPolicyParameters: "gangSchedulingStyle=strict"
+    yunikorn.apache.org/gang-name: "gang-demo"
+    yunikorn.apache.org/gang-min-members: "5"
+spec:
+  schedulerName: yunikorn
+  restartPolicy: Never
+  containers:
+    - name: worker
+      image: busybox
+      resources:
+        requests:
+          memory: "512Mi"
+          cpu: "250m"
+      command: ["sh", "-c", "echo Worker 1 running; sleep 3600"]
