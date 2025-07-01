@@ -1,0 +1,18 @@
+# Use the official Nessie image as your base
+FROM ghcr.io/projectnessie/nessie:0.95.1
+
+# Switch to root temporarily to change permissions
+USER root
+
+# Change permissions on the entrypoint script
+# This makes it executable by "others" so your random UID can run it.
+RUN chmod o+x /opt/jboss/container/java/run/run-java.sh
+
+# Switch back to the non-root user that the original image typically uses
+# (or choose a new non-root user if you want)
+# You might need to inspect the original Dockerfile for the exact USER directive.
+# Common users are 'jboss', 'default', 'nobody', or numerical UIDs.
+# If the original image doesn't set a USER, it defaults to root.
+# For UBI-based images, '1000' or 'jboss' is common.
+# Let's assume 'jboss' for now if that's what the path suggests.
+USER jboss # Or whatever the original USER was. If not specified, it's root.
