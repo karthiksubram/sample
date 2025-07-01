@@ -1,0 +1,14 @@
+|| Use Case || Airflow Operator Used || Brief Description ||
+| ETL – MinIO to SQLite | PythonOperator | Read data from MinIO S3 bucket and load it into a local SQLite database to demonstrate ETL workflow. |
+| API Invocation (internal to OCP) | PythonOperator | Invoke an internal API deployed within OCP as part of a DAG execution. |
+| Event Publish and Consume | KubernetesPodOperator | Publish a message to RabbitMQ, then a Java process consumes it and triggers a DAG via REST API. |
+| Inter-task Communication (XComs) | PythonOperator | Demonstrate passing data between tasks using XComs (e.g., generated content shared across tasks). |
+| Airflow Datasets | PythonOperator | Showcase dependency between DAGs using Airflow Dataset feature (e.g., DAG B starts after DAG A). |
+| Compute Job Scheduling with YuniKorn | KubernetesPodOperator | Submit compute jobs to the OCP cluster and control scheduling using YuniKorn features. |
+| Email Notification | EmailOperator | Send email alerts or notifications on task completion or failure. |
+| Airflow REST API | REST API Trigger | Trigger DAGs externally via Airflow REST API for integration with other systems. |
+
+
+* **Job Ordering and Queuing**: Jobs are scheduled in the order they arrive within the queue and respect configured priorities. YuniKorn ensures fairness and avoids starvation.
+* **Resource Reservation**: When sufficient resources are not available, YuniKorn reserves capacity for waiting jobs, ensuring they execute as soon as resources free up.
+* **Gang Scheduling**: Ensures all pods in a group (gang) are scheduled together. The job will only start when resources are available for the entire gang, useful for tightly coupled distributed workloads.
