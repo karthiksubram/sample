@@ -1,0 +1,33 @@
+Here's a table formatted for easy copy-paste into Confluence (Markdown, or convert to a Confluence table later). This version includes three columns: **Use Case**, **Airflow Operator Used**, and **Description**. For item 6 (YuniKorn), detailed explanation is provided below the table.
+
+---
+
+### 📘 Airflow + YuniKorn POC Use Cases
+
+| **Use Case**                         | **Airflow Operator Used**  | **Brief Description**                                                                                 |
+| ------------------------------------ | -------------------------- | ----------------------------------------------------------------------------------------------------- |
+| ETL – MinIO to SQLite                | `PythonOperator`           | Read data from MinIO S3 bucket and load it into a local SQLite database to demonstrate ETL workflow.  |
+| API Invocation (internal to OCP)     | `PythonOperator`           | Invoke an internal API deployed within OCP as part of a DAG execution.                                |
+| Event Publish and Consume            | `KubernetesPodOperator`    | Publish a message to RabbitMQ, then a Java process consumes it and triggers a DAG via REST API.       |
+| Inter-task Communication (XComs)     | `PythonOperator`           | Demonstrate passing data between tasks using XComs (e.g., generated content shared across tasks).     |
+| Airflow Datasets                     | `PythonOperator`           | Showcase dependency between DAGs using Airflow Dataset feature (e.g., DAG B starts after DAG A).      |
+| Compute Job Submission with YuniKorn | `KubernetesPodOperator`    | Submit compute-intensive jobs to OCP cluster and control execution using YuniKorn scheduler features. |
+| Email Notification                   | `EmailOperator`            | Send email alerts or notifications on task completion or failure.                                     |
+| Airflow REST API                     | `Rest API + TriggerDagRun` | Trigger DAG runs externally using Airflow REST API for integration with external applications.        |
+
+---
+
+### 🧠 Additional Notes on YuniKorn Functionality Tested
+
+For Use Case #6 (Compute Job Scheduling via YuniKorn), the following features of Apache YuniKorn were validated:
+
+* **a. Job Ordering and Queuing:**
+  Jobs submitted to the same queue were honored in the order of arrival and scheduling priority. YuniKorn handled job queuing effectively when resources were constrained, maintaining fairness and preventing starvation.
+
+* **b. Resource Reservation:**
+  YuniKorn was able to reserve compute resources when a job could not be scheduled immediately. This ensured jobs were not blocked indefinitely and would get scheduled once resources became available, without losing their spot in the queue.
+
+* **c. Gang Scheduling:**
+  Gang scheduling was tested to ensure that a group of pods (e.g., multiple containers making up one compute job) would only be scheduled when **all** of them could be placed together. This is particularly useful for tightly coupled distributed workloads where partial execution is undesirable.
+
+Let me know if you'd like this formatted as a Confluence storage format table, a downloadable HTML or Markdown file, or you want icons/styling added.
