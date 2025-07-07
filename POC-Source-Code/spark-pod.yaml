@@ -1,0 +1,50 @@
+# spark-pod-template.yaml
+apiVersion: "sparkoperator.k8s.io/v1beta2"
+kind: SparkApplication
+metadata:
+  name: pyspark-pod-template-example
+  namespace: default
+spec:
+  type: Python
+  mode: cluster
+  image: "gcr.io/spark-operator/spark-py:v3.1.1"
+  imagePullPolicy: Always
+  pythonVersion: "3"
+  mainApplicationFile: "local:///data/scripts/test_script.py"  # Path in the PV
+  sparkVersion: "3.1.1"
+
+  # Driver pod template with volume mounts
+  driver:
+    podTemplate:
+      spec:
+        containers:
+        - name: spark-kubernetes-driver
+          volumeMounts:
+          - name: spark-data
+            mountPath: "/data"
+        volumes:
+        - name: spark-data
+          persistentVolumeClaim:
+            claimName: spark-data-pvc
+
+  # Executor pod template with volume mounts
+  executor:
+    podTemplate:
+      spec:
+        containers:
+        - name: executor
+          volumeMounts:
+          - name: spark-data
+            mountPath: "/data"
+        volumes:
+        - name: spark-data
+          persistentVolumeClaim:
+            claimName: spark-data-pvc
+    cores: 1
+    instances: 2
+    memory: "1Gi"
+
+  # Additional Spark configurations
+  sparkConf:
+    "spark.kubernetes.driver.podTemplateFile": "/path/to/driver-template.yaml"  # Alternative approach
+    "spark.kubernetes.executor.podTemplateFile": "/path/to/executor-template.yaml"
