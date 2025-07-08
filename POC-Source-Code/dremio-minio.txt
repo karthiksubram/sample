@@ -1,0 +1,40 @@
+<configuration>
+  <property>
+    <name>fs.s3a.endpoint</name>
+    <value>http://minio.minio.svc.cluster.local:9000</value>
+  </property>
+  <property>
+    <name>fs.s3a.access.key</name>
+    <value>minioadmin</value>
+  </property>
+  <property>
+    <name>fs.s3a.secret.key</name>
+    <value>minioadmin</value>
+  </property>
+  <property>
+    <name>fs.s3a.path.style.access</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>fs.s3a.connection.ssl.enabled</name>
+    <value>false</value>
+  </property>
+  <property>
+    <name>fs.s3a.impl</name>
+    <value>org.apache.hadoop.fs.s3a.S3AFileSystem</value>
+  </property>
+</configuration>
+
+
+volumeMounts:
+  - name: core-site-config
+    mountPath: /opt/dremio/conf/core-site.xml
+    subPath: core-site.xml
+volumes:
+  - name: core-site-config
+    configMap:
+      name: dremio-hadoop-config
+
+oc create configmap dremio-hadoop-config \
+  --from-file=core-site.xml=core-site.xml \
+  -n dremio-namespace
