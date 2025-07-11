@@ -1,0 +1,54 @@
+apiVersion: sparkoperator.k8s.io/v1beta2
+kind: SparkApplication
+metadata:
+  name: montecarlo-pi-app-light
+  namespace: <your-openshift-project> # Replace with your OpenShift project name
+spec:
+  type: Python
+  pythonVersion: "3"
+  mode: cluster
+  image: `oc registry info --public`/your-openshift-project/spark-montecarlo:latest # Your custom image path
+  imagePullPolicy: Always
+  mainApplicationFile: local:///app/montecarlo_simulation.py
+  arguments:
+    - "1000000" # Significantly reduced iterations (1 million) for faster, lighter runs
+
+  sparkVersion: "3.3.0" # Keep this consistent with your Spark Operator
+
+  driver:
+    cores: 0.5 # Request half a CPU core
+    memory: "1g" # Request 1GB of memory
+    serviceAccount: spark
+    # Adding requests to avoid over-provisioning and ensure pod can schedule
+    requests:
+      cpu: "250m" # 250 milli-cores
+      memory: "512Mi" # 512 MiB
+
+  executor:
+    cores: 0.5 # Request half a CPU core per executor
+    instances: 1 # Start with only 1 executor
+    memory: "1g" # Request 1GB of memory per executor
+    # Adding requests for executors too
+    requests:
+      cpu: "250m"
+      memory: "512Mi"
+
+  sparkConf:
+    spark.driver.extraJavaOptions: "-Dlog4j.configuration=file:/opt/spark/conf/log4j2.properties"
+    spark.executor.extraJavaOptions: "-Dlog4j.configuration=file:/opt/spark/conf/log4j2.properties"
+    # Reduce parallelism further if needed for very constrained environments
+    spark.default.parallelism: "2" # Consider matching this to your total cores (driver + executors)
+    spark.sql.shuffle.partitions: "2"
+    # Ensure logs are not too verbose if resources are tight
+    spark.driver.maxResultSize: "512m" # Limit max size of results collected to driver
+    spark.python.worker.memory: "512m" # Memory for Python worker processes
+
+  # Consider using Node Selectors or Tolerations if you have specific, less loaded nodes
+  # driverTemplate:
+  #   spec:
+  #     nodeSelector:
+  #       size: small-spark-node # Example: label a node as 'small-spark-node'
+  # executorTemplate:
+  #   spec:
+  #     nodeSelector:
+  #       size: small-spark-node
