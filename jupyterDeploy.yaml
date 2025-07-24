@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jupyterlab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jupyterlab
+  template:
+    metadata:
+      labels:
+        app: jupyterlab
+    spec:
+      containers:
+        - name: jupyterlab
+          image: <your-registry>/jupyterlab-custom:latest
+          ports:
+            - containerPort: 8888
+          volumeMounts:
+            - name: jupyter-data
+              mountPath: /home/jupyteruser
+      volumes:
+        - name: jupyter-data
+          emptyDir: {}
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: jupyterlab
+spec:
+  selector:
+    app: jupyterlab
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8888
