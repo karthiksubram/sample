@@ -1,0 +1,69 @@
+# Use an official Ubuntu base image for stability and broad compatibility.
+FROM ubuntu:22.04
+
+# Set environment variables to prevent interactive prompts during package installation.
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Define Spark and Hadoop versions.
+# Spark 3.5.1 is a recent stable version, and it's pre-built for Hadoop 3.3.
+ENV SPARK_VERSION="3.5.1"
+ENV HADOOP_VERSION="3"
+
+# Set the SPARK_HOME environment variable to the installation directory.
+ENV SPARK_HOME="/opt/spark"
+
+# Add Spark's bin directory to the system's PATH for easy access to spark-shell, spark-submit, etc.
+ENV PATH="${PATH}:${SPARK_HOME}/bin"
+
+# Install necessary system dependencies:
+# - openjdk-17-jdk: Java Development Kit, required by Apache Spark.
+# - python3, python3-pip: Python and its package installer for JupyterLab and PySpark.
+# - wget: Utility to download files (Spark binaries).
+# - tar: Utility to extract compressed archives.
+# - gnupg, ca-certificates: Required for secure package downloads.
+# Clean up apt lists to reduce image size.
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    openjdk-17-jdk \
+    python3 \
+    python3-pip \
+    wget \
+    tar \
+    gnupg \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install JupyterLab using pip.
+RUN pip3 install jupyterlab
+
+# Download Apache Spark binaries:
+# - Use wget to download the specific Spark version pre-built for Hadoop 3.
+# - The -O /tmp/spark.tgz flag saves the downloaded file to /tmp/spark.tgz.
+# Extract Spark binaries:
+# - tar -xzf /tmp/spark.tgz extracts the gzipped tar archive.
+# - -C /opt specifies the destination directory for extraction.
+# Move the extracted Spark directory to the designated SPARK_HOME.
+# Remove the downloaded tarball to keep the image clean.
+RUN wget -q "https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz" -O /tmp/spark.tgz && \
+    tar -xzf /tmp/spark.tgz -C /opt && \
+    mv /opt/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION} ${SPARK_HOME} && \
+    rm /tmp/spark.tgz
+
+# Install the PySpark library using pip.
+# Ensure the PySpark version matches the installed Spark binaries for compatibility.
+RUN pip3 install pyspark==${SPARK_VERSION}
+
+# Set the working directory inside the container.
+# This is a common practice for Jupyter environments.
+WORKDIR /home/jovyan
+
+# Expose port 8888, which is the default port for JupyterLab.
+EXPOSE 8888
+
+# Define the command to run when the container starts.
+# - jupyter-lab: Starts the JupyterLab server.
+# - --ip=0.0.0.0: Makes JupyterLab accessible from any IP address (important for Docker).
+# - --port=8888: Specifies the port JupyterLab listens on.
+# - --allow-root: Allows JupyterLab to run as the root user (useful in Docker for simplicity, but consider non-root for production).
+# - --no-browser: Prevents JupyterLab from trying to open a browser automatically inside the container.
+CMD ["jupyter-lab", "--ip=0.0.0.0", "--port=8888", "--allow-root", "--no-browser"]
