@@ -1,0 +1,11 @@
+spark-submit \
+    --master k8s://https://<your-kubernetes-api-server-ip>:<port> \
+    --deploy-mode cluster \
+    --name my-windows-pyspark-app \
+    --conf spark.kubernetes.namespace=spark-apps \
+    --conf spark.kubernetes.container.image=apache/spark:latest \
+    --conf spark.kubernetes.authenticate.driver.serviceAccountName=spark \
+    --conf spark.executor.instances=2 \
+    --conf spark.executor.memory=2g \
+    --py-files C:/Users/karthik/downloads/my_utility.py \
+    C:/Users/karthik/downloads/main.py   # <--- THIS IS YOUR DRIVER FILE
