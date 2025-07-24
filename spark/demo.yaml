@@ -1,0 +1,93 @@
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-pyspark-code-pvc
+  namespace: spark-apps # Must be in the same namespace as your SparkApplication
+spec:
+  accessModes:
+    - ReadWriteOnce # Or ReadWriteMany if your storage supports it and you need it
+  resources:
+    requests:
+      storage: 1Gi # Adjust size as needed
+  storageClassName: standard # Replace with your cluster's StorageClass if not using 'standard'
+  
+  
+  # temp-uploader-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: temp-uploader-pod
+  namespace: spark-apps # Same namespace as your PVC
+spec:
+  containers:
+  - name: uploader-container
+    image: quay.io/quay/busybox # A lightweight image
+    command: ["sleep", "3600"] # Keep the pod running for a while
+    volumeMounts:
+    - name: code-volume
+      mountPath: /mnt/code # Mount path inside this temporary pod
+  volumes:
+  - name: code-volume
+    persistentVolumeClaim:
+      claimName: my-pyspark-code-pvc
+  restartPolicy: Never # The pod should not restart after it exits
+  
+  oc cp /path/to/your/local/my_pyspark_app.py temp-uploader-pod:/mnt/code/my_pyspark_app.py -n spark-apps
+  oc exec -it temp-uploader-pod -n spark-apps -- ls /mnt/code/
+  
+  apiVersion: sparkoperator.k8s.io/v1beta2
+kind: SparkApplication
+metadata:
+  name: my-spark-app-with-volume-code
+  namespace: spark-apps
+spec:
+  type: Python
+  pythonVersion: "3"
+  mode: cluster
+  image: "image-registry.openshift-image-registry.svc:5000/your-project/spark-py-app:latest" # Your main Spark image
+  imagePullPolicy: Always
+  mainApplicationFile: "local:///mnt/driver-code/my_pyspark_app.py" # Path on the mounted volume
+  sparkVersion: "3.5.0"
+  driver:
+    cores: 1
+    memory: "1g"
+    serviceAccount: spark-sa
+    volumeMounts:
+      - name: driver-code-volume
+        mountPath: /mnt/driver-code # Where the main driver will find the code
+    volumes:
+      - name: driver-code-volume
+        persistentVolumeClaim:
+          claimName: my-pyspark-code-pvc # Your PVC
+    # Add the initContainer here:
+    initContainers:
+      - name: copy-pyspark-code
+        image: image-registry.openshift-image-registry.svc:5000/your-project/pyspark-script-uploader:latest # Your script-containing image
+        command: ["cp", "/app/my_pyspark_app.py", "/mnt/driver-code/my_pyspark_app.py"] # Copy command
+        volumeMounts:
+          - name: driver-code-volume
+            mountPath: /mnt/driver-code # Mount the PVC into the initContainer as well
+  executor:
+    cores: 1
+    instances: 2
+    memory: "1g"
+    serviceAccount: spark-sa
+    # If executors also need the code, they will also mount the same PVC
+    volumeMounts:
+      - name: driver-code-volume
+        mountPath: /mnt/driver-code
+    volumes:
+      - name: driver-code-volume
+        persistentVolumeClaim:
+          claimName: my-pyspark-code-pvc
+		  
+		  --------------
+		      # If your Python script is not part of the image, you'd add volumeMounts here
+    # volumeMounts:
+    #   - name: my-code-volume
+    #     mountPath: /opt/spark/work-dir
+    # volumes:
+    #   - name: my-code-volume
+    #     persistentVolumeClaim:
+    #       claimName: my-pyspark-code-pvc
