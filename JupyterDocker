@@ -2,6 +2,12 @@ FROM your-org/custom-pyspark:latest
 
 USER root
 
+ENV HOME=/home/jupyteruser
+ENV XDG_RUNTIME_DIR=$HOME/.local/share/runtime
+ENV JUPYTER_RUNTIME_DIR=$HOME/.local/share/jupyter/runtime
+
+RUN mkdir -p $JUPYTER_RUNTIME_DIR && chown -R jupyteruser:jupyteruser $HOME
+
 # Install OpenJDK if not present in base image
 RUN apt-get update && \
     apt-get install -y openjdk-11-jdk && \
