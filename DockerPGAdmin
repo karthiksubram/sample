@@ -1,0 +1,17 @@
+FROM dpage/pgadmin4:latest
+
+# Remove fixed user context
+USER root
+
+# Set correct permissions so any UID can run Python and pgAdmin
+RUN chmod -R a+rx /venv && \
+    chmod -R a+rx /pgadmin4 && \
+    chmod -R a+rx /usr/local/lib/python3*
+
+# Optional: create a writable directory for user data
+RUN mkdir -p /var/lib/pgadmin && chmod -R 777 /var/lib/pgadmin
+
+# Let OpenShift use its random UID
+USER 1001
+
+ENTRYPOINT ["/entrypoint.sh"]
