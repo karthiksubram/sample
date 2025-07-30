@@ -1,4 +1,43 @@
 flowchart TD
+    %% External Trigger
+    User[User runs PySpark job<br>from JupyterLab Notebook]
+
+    %% OpenShift Cluster
+    subgraph OCP [OpenShift Container Platform]
+        direction TB
+
+        JL[JupyterLab Pod<br>acts as Spark Driver]
+        YK[YuniKorn Scheduler]
+
+        subgraph EXEC[Executor Pods]
+            direction LR
+            E1[Executor Pod 1]
+            E2[Executor Pod 2]
+            E3[Executor Pod N]
+        end
+
+        PG[PostgreSQL Pod]
+        NS[Nessie Pod<br>Catalog & Versioning]
+        S3[S3 / MinIO Pod<br>Lake Storage]
+    end
+
+    %% Flow
+    User --> JL
+    JL --> YK
+    YK --> E1
+    YK --> E2
+    YK --> E3
+
+    JL --> E1
+    JL --> E2
+    JL --> E3
+
+    JL --> PG
+    JL --> NS
+    NS --> S3
+
+
+flowchart TD
     %% External Interaction
     User[User starts Spark job<br>from JupyterLab UI]
 
