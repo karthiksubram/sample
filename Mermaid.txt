@@ -1,0 +1,47 @@
+flowchart TD
+    %% External Interaction
+    User[User starts Spark job<br>from JupyterLab UI]
+
+    %% Spark App Submission
+    User --> JL
+
+    subgraph OCP [OpenShift Container Platform]
+        direction TB
+
+        JL[JupyterLab Pod<br>Submits SparkApplication]
+        SA[SparkApplication CRD<br>Submitted to OCP]
+        SO[Spark Operator<br>Watches SparkApplication]
+
+        YK[YuniKorn Scheduler<br>Schedules Pods]
+
+        DRV[Driver Pod<br>Created by Spark Operator]
+        
+        subgraph EXE [Executor Pods (Dynamic)]
+            direction LR
+            E1[Executor 1]
+            E2[Executor 2]
+            E3[Executor N]
+        end
+
+        PG[PostgreSQL Pod]
+        NS[Nessie Pod<br>Catalog Service]
+        S3[MinIO or S3 Pod<br>Lake Storage]
+
+    end
+
+    %% Flow connections
+    JL --> SA
+    SA --> SO
+    SO -->|Create| DRV
+    DRV --> YK
+    YK --> DRV
+    DRV --> E1
+    DRV --> E2
+    DRV --> E3
+    YK --> E1
+    YK --> E2
+    YK --> E3
+
+    DRV --> PG
+    DRV --> NS
+    NS --> S3
