@@ -1,0 +1,27 @@
+flowchart TD
+  subgraph OCP_Cluster
+    JupyterLab[JupyterLab (Spark Driver)]
+    YuniKorn[YuniKorn Scheduler]
+    SparkExecutors[Spark Executors]
+    Postgres[Postgres DB]
+    Minio[Minio S3]
+    Nessie[Nessie Catalog]
+    CSVFile[Large CSV File]
+  end
+
+  JupyterLab -- Submits PySpark Job --> YuniKorn
+  YuniKorn -- Allocates Resources --> SparkExecutors
+
+  JupyterLab -- Reads Table --> Postgres
+  JupyterLab -- Reads File --> CSVFile
+  JupyterLab -- Merge & Transform --> SparkExecutors
+
+  SparkExecutors -- Check Buckets --> Minio
+  SparkExecutors -- Create Table --> Nessie
+  SparkExecutors -- Write/Read Data --> Minio
+
+  JupyterLab -- Displays Results --> User
+
+  %% Flow details
+  CSVFile -.-> JupyterLab
+  Postgres -.-> JupyterLab
