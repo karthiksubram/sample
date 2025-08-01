@@ -1,0 +1,137 @@
+Here is structured, **Confluence-compatible content** that clearly compares both Spark deployment approaches (**Spark Helm chart vs. Spark Operator**) specifically tailored for your organization's OpenShift Container Platform (OCP) setup:
+
+---
+
+# 📌 **Apache Spark Deployment on OpenShift (OCP): Comparison of Approaches**
+
+This document compares two widely used methods for deploying Apache Spark workloads on our shared OpenShift Container Platform (OCP) environment:
+
+* **Helm Chart-based Deployment (Standalone Mode)**
+* **Spark Operator (Kubernetes Native Mode)**
+
+The goal of this comparison is to identify the optimal deployment model considering resource utilization, maintainability, scalability, and compatibility with our OCP setup.
+
+---
+
+## 🖥️ **1. Helm Chart-based Spark Deployment (Standalone Mode)**
+
+### **Overview**
+
+Deploys Spark using Helm charts in **standalone cluster mode**:
+
+* **Spark Master Pod** and **Worker Pods** run continuously.
+* Jobs are submitted externally via `spark-submit` to the Spark Master.
+* Executors are spawned inside existing Worker pods.
+
+### **Key Characteristics**
+
+| Feature                        | Details                                        |
+| ------------------------------ | ---------------------------------------------- |
+| **Cluster Setup**              | Permanent Spark Master and Worker pods         |
+| **Driver Pod Creation**        | Created via spark-submit                       |
+| **Executor Pods**              | Executors run as JVM processes in Worker pods  |
+| **Resource Scheduling**        | Managed by Spark Master (not Kubernetes-aware) |
+| **Scalability**                | Limited, manual scaling                        |
+| **Namespace Quota Management** | Challenging due to persistent pods             |
+| **Maintenance & Upgrade**      | Requires manual Helm updates                   |
+| **Monitoring & Logging**       | Requires custom setup                          |
+| **Ideal Use-case**             | Static, long-running Spark clusters            |
+
+### **Pros and Cons**
+
+**Pros:**
+
+* Simple initial setup via Helm.
+* Suitable for static workloads or development environments.
+
+**Cons:**
+
+* Limited dynamic resource utilization.
+* Poor integration with Kubernetes resource quotas.
+* Difficult scaling, manual lifecycle management.
+* Not optimized for multi-tenant namespace environments like ours.
+
+---
+
+## 🚀 **2. Spark Operator Deployment (Kubernetes Native Mode)**
+
+### **Overview**
+
+Deploys Spark workloads using **Spark Operator**:
+
+* Spark Operator is deployed in namespace.
+* Jobs are submitted as `SparkApplication` YAML manifests.
+* Kubernetes directly manages Driver and Executor pods individually.
+
+### **Key Characteristics**
+
+| Feature                        | Details                                                      |
+| ------------------------------ | ------------------------------------------------------------ |
+| **Cluster Setup**              | No permanent Spark Master or Worker pods                     |
+| **Driver Pod Creation**        | Created automatically by Spark Operator from CRDs            |
+| **Executor Pods**              | Independent pods scheduled by Kubernetes                     |
+| **Resource Scheduling**        | Kubernetes native (compatible with YuniKorn, etc.)           |
+| **Scalability**                | Highly dynamic and elastic                                   |
+| **Namespace Quota Management** | Excellent (pods fully Kubernetes-managed)                    |
+| **Maintenance & Upgrade**      | Easy to upgrade and maintain via Operator updates            |
+| **Monitoring & Logging**       | Native Prometheus integration, structured logging            |
+| **Ideal Use-case**             | Dynamic jobs, batch processing, ML workloads, data pipelines |
+
+### **Pros and Cons**
+
+**Pros:**
+
+* Excellent resource management and utilization.
+* Direct Kubernetes integration (dynamic pod scheduling).
+* Easier to automate via CI/CD pipelines.
+* Ideal for multi-tenant, quota-based namespaces like ours.
+
+**Cons:**
+
+* Additional component (Operator) to maintain and upgrade.
+* Slightly higher initial learning curve (CRDs).
+
+---
+
+## 📊 **Side-by-Side Comparison Table**
+
+| **Feature**                    | **Helm Standalone Mode**              | **Spark Operator Mode**              |
+| ------------------------------ | ------------------------------------- | ------------------------------------ |
+| **Architecture**               | Master/Worker pods                    | Kubernetes-native pods               |
+| **Driver Creation**            | spark-submit                          | Spark Operator via CRD               |
+| **Resource Management**        | Spark Master                          | Kubernetes scheduler                 |
+| **Dynamic Scaling**            | Limited                               | Excellent                            |
+| **Namespace Isolation**        | Poor                                  | Excellent (per-namespace Operator)   |
+| **Maintenance Overhead**       | Higher (manual Helm upgrades)         | Lower (Operator CRD-based upgrades)  |
+| **Multi-tenancy suitability**  | Limited                               | Excellent                            |
+| **Monitoring & Observability** | Manual setup required                 | Built-in Prometheus metrics/logging  |
+| **Integration with CI/CD**     | Complex (manual Helm updates per job) | Simple (YAML manifests in pipelines) |
+| **Recommended for OCP Setup**  | 🚫 Not Recommended                    | ✅ Strongly Recommended               |
+
+---
+
+## 📌 **Summary & Recommendation**
+
+Considering our shared OCP environment and namespace resource quotas:
+
+* The **Helm-based standalone mode** is **not recommended** due to:
+
+  * Poor scalability and resource management.
+  * Manual lifecycle management overhead.
+  * Inefficient resource utilization.
+
+* The **Spark Operator model** is **highly recommended** for our organization because it:
+
+  * Provides dynamic and efficient resource scheduling.
+  * Integrates seamlessly with our Kubernetes-based OCP quotas.
+  * Simplifies operational tasks and automates Spark workload deployments.
+
+---
+
+## 📝 **Final Takeaway**
+
+In the context of our OCP environment, the **Spark Operator** clearly emerges as the optimal solution. It maximizes resource efficiency, improves maintainability, and aligns perfectly with our CI/CD automation and namespace-based resource quotas.
+
+---
+
+Feel free to let me know if you'd like any further elaboration, visuals, or specific sections added to the content before uploading to Confluence.
