@@ -1,0 +1,107 @@
+You are working in the ROOT of a multi-module Gradle Java repository in VS Code.
+
+Goal
+- For EVERY module: create/expand JUnit 5 tests to reach ≥ 80% LINE coverage.
+- Do NOT publish to SonarQube. Keep SonarLint for static analysis only.
+- Produce per-module and aggregated JaCoCo reports (HTML + XML).
+- Provide VS Code tasks to run coverage and open the HTML reports.
+- Optionally enable in-editor line coverage via Coverage Gutters by generating LCOV from JaCoCo.
+
+Do NOT ask questions. If details are missing, pick sane defaults and proceed. Leave TODOs where appropriate.
+
+========================================
+1) Detect modules
+========================================
+- Read settings.gradle(.kts); list all subprojects. Print the discovered modules.
+
+========================================
+2) Configure testing & coverage (Gradle)
+========================================
+In ALL subprojects:
+- Apply plugins: `java`, `jacoco`.
+- Testing deps: JUnit Jupiter (junit-jupiter + junit-jupiter-params), Mockito, AssertJ.
+- `tasks.test { useJUnitPlatform() }`
+- `tasks.jacocoTestReport { reports { xml.required = true; html.required = true } }`
+- `tasks.jacocoTestCoverageVerification { violationRules { rule { limit { counter = 'LINE'; value = 'COVEREDRATIO'; minimum = 0.80 } } } }`
+- Make `check` depend on coverage verification:
+  `tasks.named("check") { dependsOn("jacocoTestCoverageVerification") }`
+- Exclude non-executable/generated classes from coverage checks (adjust paths as needed):
+  - examples: `**/generated/**`, `**/dto/**`, `**/config/**`, `**/*Application.class`
+
+Aggregation at ROOT:
+- If Gradle 8+ available: use `jacoco-report-aggregation` plugin.
+  - Configure `testCodeCoverageReport` to aggregate all subprojects, output XML at: `build/reports/jacoco/aggregate/jacoco.xml` and HTML at `build/reports/jacoco/aggregate/html/index.html`.
+- If not available: create fallback tasks:
+  - `jacocoMergeAll` to merge `**/jacoco/test.exec` files into `build/jacoco/merged.exec`.
+  - `jacocoRootReport` (type `JacocoReport`) to consume merged exec + all subprojects’ classes/sources, produce XML at `build/reports/jacoco/aggregate/jacoco.xml` and HTML at `build/reports/jacoco/aggregate/html/index.html`.
+  - Ensure aggregate tasks depend on all subprojects’ `test`.
+
+========================================
+3) VS Code integration (no SonarQube)
+========================================
+- Create `.vscode/tasks.json` with tasks:
+  - `coverage:module:<name>` — runs `./gradlew :<name>:clean :<name>:test :<name>:jacocoTestReport` then prints HTML path.
+  - `coverage:all` — runs `./gradlew clean test jacocoTestReport` plus aggregate (`testCodeCoverageReport` OR `jacocoMergeAll jacocoRootReport`), then prints aggregate HTML path.
+  - `open:aggregate-report` — opens `build/reports/jacoco/aggregate/html/index.html`.
+- Create `.vscode/extensions.json` recommending:
+  - “vscjava.vscode-java-test”, “vscjava.vscode-java-pack”, “richardwillis.vscode-coverage-gutters”.
+- (Optional) Add a Gradle task to generate LCOV for Coverage Gutters:
+  - Introduce a simple conversion step (e.g., add a Gradle task `jacocoToLcov` using a small Java/Kotlin snippet or script) to convert `jacoco.xml` → `lcov.info` into `build/reports/coverage/lcov.info`.
+  - Add VS Code settings to have Coverage Gutters read that LCOV file.
+  - If implementing conversion is out of scope, leave a TODO note.
+
+========================================
+4) Test authoring workflow
+========================================
+For EACH module:
+- Print detected source sets.
+- Create/extend tests under `src/test/java` (or kotlin).
+- Heuristics:
+  - Prioritize services/domain logic, then controllers/resources, then utilities.
+  - Cover public APIs, branches, exceptional paths, null/empty inputs, boundary values, time-dependent logic.
+  - Use Mockito for external collaborators (HTTP/DB/queues). No containers or real network.
+  - Use AssertJ for fluent assertions; add parameterized tests where valuable.
+  - If Spring present, prefer slice tests (@WebMvcTest, @DataJpaTest) or pure unit tests; avoid full context unless required.
+- After adding tests:
+  - Run `./gradlew :<module>:test :<module>:jacocoTestReport`
+  - If LINE coverage < 0.80:
+    - Add tests for uncovered branches/guards.
+    - Or justify exclusions (document in build config).
+    - Rerun until ≥ 0.80 for that module unless exclusions are justified.
+
+========================================
+5) Enforce gates & produce artifacts
+========================================
+- Ensure `check` fails if any subproject is < 80% LINE coverage.
+- Generate aggregate report (HTML + XML).
+- Print:
+  - Per-module coverage report paths: `:module/build/reports/jacoco/test/html/index.html`
+  - Aggregate report path: `build/reports/jacoco/aggregate/html/index.html`
+
+========================================
+6) Developer docs & summary
+========================================
+- Create `README_TESTING.md` with:
+  - How to run per-module and all-modules coverage.
+  - Where to find HTML reports.
+  - How to view coverage in-editor via Coverage Gutters (and steps to generate LCOV).
+- Create `COVERAGE_SUMMARY.md`:
+  - Per-module final coverage and overall aggregate coverage with timestamp.
+  - Notable gaps and TODOs.
+- Keep SonarLint enabled for static analysis only.
+
+========================================
+7) Commands to execute now (and wire into VS Code tasks)
+========================================
+- Baseline (before adding tests): `./gradlew clean test jacocoTestReport` and aggregate (`testCodeCoverageReport` OR `jacocoMergeAll jacocoRootReport`); record baseline numbers in COVERAGE_SUMMARY.md.
+- After adding tests across modules, re-run the same and update COVERAGE_SUMMARY.md.
+- Print final per-module and aggregate coverage, and the path to the aggregate HTML report.
+
+========================================
+8) Safety & hygiene
+========================================
+- No secrets; no external services.
+- Do not rewrite production code unless needed for testability (introduce seams/clocks/interfaces minimally).
+- Keep Java toolchain consistent with the project (default Java 17 if unspecified).
+
+Proceed now: configure Gradle coverage, add/extend tests to reach ≥80% per module, produce aggregate report, wire VS Code tasks, and output all relevant report paths.
