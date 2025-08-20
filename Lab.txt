@@ -1,0 +1,106 @@
+# =======================
+# Secret: Jupyter password hash
+# =======================
+apiVersion: v1
+kind: Secret
+metadata:
+  name: jupyter-secrets
+  namespace: your-namespace
+type: Opaque
+stringData:
+  JUPYTER_PASSWORD_HASH: "argon2:$argon2id$v=19$m=65536,t=3,p=4$..."
+
+---
+# =======================
+# ConfigMap: Jupyter config
+# =======================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jupyter-config
+  namespace: your-namespace
+data:
+  jupyter_server_config.py: |
+    import os
+    c = get_config()
+    c.ServerApp.password = os.environ.get("JUPYTER_PASSWORD_HASH", "")
+    c.ServerApp.password_required = True
+    c.ServerApp.token = ""   # disable token login
+    c.ServerApp.ip = "0.0.0.0"
+    c.ServerApp.port = 8888
+    c.ServerApp.allow_remote_access = True
+
+---
+# =======================
+# Deployment: JupyterLab
+# =======================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jupyterlab
+  namespace: your-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jupyterlab
+  template:
+    metadata:
+      labels:
+        app: jupyterlab
+    spec:
+      containers:
+      - name: jupyterlab
+        image: jupyter/base-notebook:latest   # <--- change to your custom image if needed
+        ports:
+        - containerPort: 8888
+        env:
+        - name: JUPYTER_PASSWORD_HASH
+          valueFrom:
+            secretKeyRef:
+              name: jupyter-secrets
+              key: JUPYTER_PASSWORD_HASH
+        - name: JUPYTER_CONFIG_DIR
+          value: /etc/jupyter
+        volumeMounts:
+        - name: jupyter-config
+          mountPath: /etc/jupyter
+      volumes:
+      - name: jupyter-config
+        configMap:
+          name: jupyter-config
+
+---
+# =======================
+# Service
+# =======================
+apiVersion: v1
+kind: Service
+metadata:
+  name: jupyter-svc
+  namespace: your-namespace
+spec:
+  selector:
+    app: jupyterlab
+  ports:
+  - name: http
+    port: 8888
+    targetPort: 8888
+
+---
+# =======================
+# Route (OpenShift ingress)
+# =======================
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: jupyter
+  namespace: your-namespace
+spec:
+  to:
+    kind: Service
+    name: jupyter-svc
+  port:
+    targetPort: http
+  tls:
+    termination: edge
