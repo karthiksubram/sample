@@ -1,0 +1,23 @@
+import pyodbc
+import pandas as pd
+
+# Build DSN-less connection string
+conn_str = (
+    "Driver=/opt/dremio-odbc/lib64/libdrillodbc_sb64.so;"
+    "ConnectionType=Direct;"
+    "HOST=dremio-coordinator.<namespace>.svc.cluster.local;"
+    "PORT=31010;"
+    "AuthenticationType=Plain;"
+    "UID=your_dremio_user;"
+    "PWD=your_dremio_password;"
+    "SSL=0;"
+)
+
+# Connect
+conn = pyodbc.connect(conn_str, autocommit=True)
+
+# Query example
+query = 'SELECT * FROM Samples."samples.dremio.com".NYC_taxi LIMIT 5'
+df = pd.read_sql(query, conn)
+
+print(df)
