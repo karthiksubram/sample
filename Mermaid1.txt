@@ -1,0 +1,51 @@
+classDiagram
+    class Deployment {
+        -metadata: name, namespace, labels
+        -spec: replicas, selector, template
+        -strategy: RollingUpdate, Recreate
+        -status: readyReplicas, updatedReplicas
+        +create()
+        +update()
+        +scale()
+        +rollback()
+    }
+    class ReplicaSet {
+        -metadata: name, labels
+        -spec: replicas, selector, template
+        -status: readyReplicas
+        +ensureReplicas()
+        +replaceFailedPods()
+    }
+    class Pod {
+        -metadata: name, labels
+        -spec: containers, volumes, resources
+        -status: phase (Pending, Running, etc.)
+        +runContainers()
+        +livenessProbe()
+        +readinessProbe()
+    }
+    class Service {
+        -metadata: name, namespace
+        -spec: selector, ports
+        +routeTraffic()
+    }
+    class HorizontalPodAutoscaler {
+        -metadata: name
+        -spec: targetDeployment, metrics
+        +scaleReplicas()
+    }
+    class Ingress {
+        -metadata: name
+        -spec: rules, paths
+        +exposeHTTP()
+    }
+
+    Deployment --> ReplicaSet : manages
+    ReplicaSet --> Pod : creates/maintains
+    Service --> Pod : routes traffic to
+    HorizontalPodAutoscaler --> Deployment : autoscales
+    Ingress --> Service : routes external traffic
+    Deployment : +RollingUpdate(maxSurge, maxUnavailable)
+    Deployment : +Recreate()
+    Pod : +containers[]
+    Pod : +volumes[]
