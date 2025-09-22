@@ -46,32 +46,5 @@ The goal of this architecture is to provide a **highly available and self-healin
   The software responsible for running the containers.  
   Examples: **containerd, CRI-O, or Docker**.
 
-``` mermaid
-graph TD
-    subgraph "Kubernetes Cluster"
-        subgraph "Control Plane (Master)"
-            API[API Server] -->|Reads & Writes| etcd[(etcd)]
-            Scheduler[Scheduler] -->|Watches Pods| API
-            Controller[Controller Manager] -->|Watches Cluster State| API
-        end
 
-        subgraph "Worker Node (1)"
-            Kubelet1[Kubelet]
-            KubeProxy1[Kube-Proxy]
-            ContainerRuntime1[Container Runtime]
-            Kubelet1 -->|Manages| Pod1[Pod]
-            KubeProxy1 -->|Proxies Traffic| Pod1
-        end
-
-        subgraph "Worker Node (2)"
-            Kubelet2[Kubelet]
-            KubeProxy2[Kube-Proxy]
-            ContainerRuntime2[Container Runtime]
-            Kubelet2 -->|Manages| Pod2[Pod]
-            KubeProxy2 -->|Proxies Traffic| Pod2
-        end
-
-        API -->|Communicates with| Kubelet1
-        API -->|Communicates with| Kubelet2
-    end
-```
+![K8S Architecture](./kubernetes-architecture.jpg)
