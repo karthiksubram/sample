@@ -121,5 +121,6 @@ graph TD
     style D fill:#ffb,stroke:#333,stroke-width:2px
     style E fill:#fbf,stroke:#333,stroke-width:2px
 
+```
 
-![Pods](./pods.jpg)
+![Pods](./Kubernetes-pod.jpg)
