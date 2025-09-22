@@ -72,3 +72,88 @@ The choice of strategy depends on your application’s needs and tolerance for d
 ---
 
 These strategies provide the **flexibility needed for modern DevOps workflows**, allowing you to safely and efficiently update your applications.
+
+``` yaml
+#--- Mandatory Section 1: API Version, Kind, and Metadata ---
+
+# apiVersion: Specifies the Kubernetes API version.
+# For Deployments, this is typically 'apps/v1'.
+apiVersion: apps/v1
+
+# kind: The type of resource you are creating.
+# This must be 'Deployment' for a Deployment object.
+kind: Deployment
+
+# metadata: Contains data that uniquely identifies this object.
+metadata:
+  # name: A mandatory name for the Deployment. This must be unique within its namespace.
+  name: my-app-deployment
+  # namespace: (Optional but recommended) The Kubernetes namespace to deploy to.
+  # If not specified, it will be deployed to the 'default' namespace.
+  namespace: my-app-namespace
+
+#--- Mandatory Section 2: Spec (Deployment Specification) ---
+
+# spec: The desired state of the Deployment.
+spec:
+  # replicas: (Mandatory) The number of identical pods to run.
+  # The Deployment controller will ensure this many pods are always running.
+  replicas: 3
+
+  # selector: (Mandatory) A label selector that defines which pods the Deployment manages.
+  # The labels in the pod template below must match this selector.
+  selector:
+    matchLabels:
+      app: my-app
+
+  # template: (Mandatory) The pod template.
+  # This is the blueprint for the pods that the Deployment will create.
+  template:
+    # metadata: The metadata for the pods created by this template.
+    metadata:
+      # labels: (Mandatory) The labels that must match the Deployment's selector.
+      labels:
+        app: my-app
+        version: v1.0.0
+
+    # spec: The specification for the pod's containers and other pod-level configurations.
+    spec:
+      # containers: (Mandatory) A list of containers to run in the pod.
+      containers:
+        # name: (Mandatory) A unique name for the container within the pod.
+        - name: my-app-container
+          # image: (Mandatory) The container image to use.
+          # You can specify a tag, e.g., 'nginx:1.23.0'.
+          image: nginx:1.23.0
+          # ports: (Optional) Exposes ports from the container.
+          ports:
+            - containerPort: 80
+          # resources: (Optional) Specifies resource requests and limits for the container.
+          # This is highly recommended for production deployments.
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+```
+
+``` mermaid
+graph TD
+    A[OCP Deployment] -->|Manages| B(ReplicaSet)
+    B -->|Creates & Maintains| C[Pods]
+    C -->|Run on| D[Worker Node]
+    A -- Scalability, Self-Healing, Rollbacks --> A
+```
+## Rolling Update deployment
+``` mermaid
+graph TD
+    subgraph "Rolling Update"
+        direction LR
+        A[Old Pods] -->|Gradually replaced by| B(New Pods)
+        B -->|Wait for readiness| C{Ready?}
+        C -->|Yes| D[Old Pods Terminated]
+        C -->|No| E[Wait]
+    end
+```
