@@ -1,0 +1,32 @@
+name: 6-Hour Portfolio Analysis
+on:
+  schedule:
+    # Runs every 6 hours (00:00, 06:00, 12:00, 18:00 UTC)
+    - cron: '0 */6 * * *'
+  workflow_dispatch: # This adds the "Run workflow" button for immediate testing
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          pip install requests google-genai python-telegram-bot
+
+      - name: Run Analysis Script
+        env:
+          # These link your GitHub Secrets to your Python code
+          IB_TOKEN: ${{ secrets.IB_TOKEN }}
+          IB_QUERY_ID: ${{ secrets.IB_QUERY_ID }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+        run: python your_script_name.py
