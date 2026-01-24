@@ -8,10 +8,11 @@ import asyncio
 
 # --- 1. CONFIGURATION ---
 IB_TOKEN = os.environ.get("IB_TOKEN")
-QUERY_ID = os.environ.get("QUERY_ID")
+QUERY_ID = os.environ.get("IB_QUERY_ID")
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
 CHAT_ID = os.environ.get("CHAT_ID")
+
 
 # Initialize Clients
 client = genai.Client(api_key=GEMINI_API_KEY)
