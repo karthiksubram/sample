@@ -2,7 +2,7 @@ name: 6-Hour Portfolio Analysis
 on:
   schedule:
     # Runs every 6 hours (00:00, 06:00, 12:00, 18:00 UTC)
-    - cron: '0 */6 * * *'
+    - cron: '0 10 * * *'
   workflow_dispatch: # This adds the "Run workflow" button for immediate testing
 
 jobs:
