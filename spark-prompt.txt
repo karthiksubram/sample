@@ -1,0 +1,21 @@
+@workspace (Select the entry point code)
+This is the main entry point for the exposure calculation. Based on this:
+
+Trace the execution flow to see where TDS library calls are made.
+
+Identify if the trade data is loaded in a single batch or processed iteratively.
+
+Determine how the calculation results are aggregated before being persisted.
+
+Use this to update the "Technical Skills" section of the skill.md with the exact class/method names used for the core logic.
+
+What I’m looking for in that Entry Point
+If you paste the code or describe the method here, I can help you identify these Migration Critical patterns:
+
+The Iterator Pattern: Does it loop through a List<Trade>? (In Spark, this becomes a DataSet.map()).
+
+Shared State: Are there any "Global" or "Singleton" objects being updated during the calculation? (These are "poison" for distributed Spark and need to be refactored into stateless transformations).
+
+TDS Lookup Frequency: Does it call TDS once at the start, or for every single trade? (Frequent small lookups are slow in Spark; we’ll want to "Broadcast" that data or join it as an Iceberg table).
+
+Error Handling: How does it handle a calculation failure for a single trade? (Important for Spark’s fault tolerance).
