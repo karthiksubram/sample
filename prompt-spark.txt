@@ -1,0 +1,8 @@
+@workspace In my Spark migration, trace the DAG lineage from the 
+nested loops across assets, risk factors and 72 tenors. Show me 
+as a Mermaid diagram where the lineage depth grows and where 
+checkpointing should be placed.
+
+
+That combination — parametric pricing + nested loops + 72 tenors — is the worst-case pattern for Spark. The nested loop structure creates a deeply chained DAG that Spark was never designed to handle iteratively.
+Here's the core problem visualized:This diagram shows the contrast between what you have now vs what you should have — the nested loop approach creates deep sequential DAG chains, while the flat approach creates one wide parallel DAG that Spark handles well.
